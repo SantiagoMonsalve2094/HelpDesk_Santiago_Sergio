@@ -1,7 +1,12 @@
+using FluentAssertions;
+using HelpDesk.Backend.Application.Abstractions;
+using HelpDesk.Backend.Application.Abstractions.Persistence;
 using HelpDesk.Backend.Application.Common.Exceptions;
 using HelpDesk.Backend.Application.Features.Auth.Commands.Login;
 using HelpDesk.Backend.Application.Features.Auth.Queries.GetCurrentUser;
 using HelpDesk.Backend.Application.Tests.TestDoubles;
+using HelpDesk.Backend.Domain.Users;
+using Moq;
 
 namespace HelpDesk.Backend.Application.Tests.Auth;
 
@@ -10,31 +15,58 @@ public sealed class AuthApplicationTests
     [Fact]
     public async Task Login_WithValidCredentials_ReturnsTokenAndUserProfile()
     {
-        var context = new TestContext();
+        // Arrange
         var category = ApplicationTestData.Category();
         var user = ApplicationTestData.Technician([category.Id]);
-        context.Add(user);
-        var tokens = new FakeAccessTokenGenerator();
-        var handler = new LoginHandler(
-            context.UnitOfWork,
-            context.PasswordHasher,
-            tokens,
-            new LoginValidator());
+        var expectedToken = new AccessTokenResult(
+            "access-token",
+            ApplicationTestData.Now.AddHours(1));
+        var users = new Mock<IUserRepository>(MockBehavior.Strict);
+        var unitOfWork = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var passwordHasher = new Mock<IPasswordHasher>(MockBehavior.Strict);
+        var tokenGenerator = new Mock<IAccessTokenGenerator>(MockBehavior.Strict);
         using var cancellation = new CancellationTokenSource();
 
+        unitOfWork.SetupGet(current => current.Users).Returns(users.Object);
+        users
+            .Setup(current => current.GetByEmailAsync(user.Email.Value, cancellation.Token))
+            .ReturnsAsync(user);
+        passwordHasher
+            .Setup(current => current.Verify(user.PasswordHash, "secret"))
+            .Returns(true);
+        tokenGenerator
+            .Setup(current => current.Generate(user))
+            .Returns(expectedToken);
+
+        var handler = new LoginHandler(
+            unitOfWork.Object,
+            passwordHasher.Object,
+            tokenGenerator.Object,
+            new LoginValidator());
+
+        // Act
         var response = await handler.Handle(
             new LoginCommand(user.Email.Value, "secret"),
             cancellation.Token);
 
-        Assert.Equal("access-token", response.AccessToken);
-        Assert.Equal("Bearer", response.TokenType);
-        Assert.Equal(user.Id, response.User.Id);
-        Assert.Contains(
-            category.Id,
-            response.User.TechnicianProfile!.SupportCategoryIds);
-        Assert.Same(user, tokens.ReceivedUser);
-        Assert.Equal("hash-tech", context.PasswordHasher.ReceivedHash);
-        Assert.Equal(cancellation.Token, context.Users.ReceivedCancellationToken);
+        // Assert
+        response.AccessToken.Should().Be(expectedToken.AccessToken);
+        response.TokenType.Should().Be("Bearer");
+        response.ExpiresAtUtc.Should().Be(expectedToken.ExpiresAtUtc);
+        response.User.Id.Should().Be(user.Id);
+        response.User.TechnicianProfile!.SupportCategoryIds.Should().Contain(category.Id);
+        users.Verify(
+            current => current.GetByEmailAsync(user.Email.Value, cancellation.Token),
+            Times.Once);
+        passwordHasher.Verify(
+            current => current.Verify(user.PasswordHash, "secret"),
+            Times.Once);
+        tokenGenerator.Verify(current => current.Generate(It.Is<User>(value => value == user)), Times.Once);
+        unitOfWork.VerifyGet(current => current.Users, Times.Once);
+        unitOfWork.VerifyNoOtherCalls();
+        users.VerifyNoOtherCalls();
+        passwordHasher.VerifyNoOtherCalls();
+        tokenGenerator.VerifyNoOtherCalls();
     }
 
     [Fact]

@@ -1,10 +1,15 @@
 using FluentValidation;
+using FluentAssertions;
+using HelpDesk.Backend.Application.Abstractions;
+using HelpDesk.Backend.Application.Abstractions.Persistence;
 using HelpDesk.Backend.Application.Features.Users.Commands.CreateUser;
 using HelpDesk.Backend.Application.Features.Users.Commands.UpdateTechnicianProfile;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUserById;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUsers;
 using HelpDesk.Backend.Application.Tests.TestDoubles;
 using HelpDesk.Backend.Domain.Enums;
+using HelpDesk.Backend.Domain.Users;
+using Moq;
 
 namespace HelpDesk.Backend.Application.Tests.Users;
 
@@ -13,15 +18,14 @@ public sealed class UserApplicationTests
     [Fact]
     public async Task CreateUser_HashesPasswordAndPersistsOnce()
     {
-        var context = new TestContext();
+        // Arrange
         var admin = ApplicationTestData.SuperAdmin();
-        context.Add(admin);
+        var users = new Mock<IUserRepository>(MockBehavior.Strict);
+        var unitOfWork = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var passwordHasher = new Mock<IPasswordHasher>(MockBehavior.Strict);
+        var clock = new Mock<IClock>(MockBehavior.Strict);
+        User? createdUser = null;
         using var cancellation = new CancellationTokenSource();
-        var handler = new CreateUserHandler(
-            context.UnitOfWork,
-            context.PasswordHasher,
-            context.Clock,
-            new CreateUserValidator());
         var command = new CreateUserCommand(
             admin.Id,
             "Nuevo Usuario",
@@ -31,13 +35,60 @@ public sealed class UserApplicationTests
             [],
             null);
 
+        unitOfWork.SetupGet(current => current.Users).Returns(users.Object);
+        users
+            .Setup(current => current.GetByIdAsync(admin.Id, cancellation.Token))
+            .ReturnsAsync(admin);
+        users
+            .Setup(current => current.ExistsByEmailAsync(command.Email, null, cancellation.Token))
+            .ReturnsAsync(false);
+        passwordHasher
+            .Setup(current => current.Hash(command.Password))
+            .Returns("HASH::secreto");
+        clock.SetupGet(current => current.UtcNow).Returns(ApplicationTestData.Now);
+        users
+            .Setup(current => current.AddAsync(It.IsAny<User>(), cancellation.Token))
+            .Callback<User, CancellationToken>((user, _) => createdUser = user)
+            .Returns(Task.CompletedTask);
+        unitOfWork
+            .Setup(current => current.SaveChangesAsync(cancellation.Token))
+            .ReturnsAsync(1);
+
+        var handler = new CreateUserHandler(
+            unitOfWork.Object,
+            passwordHasher.Object,
+            clock.Object,
+            new CreateUserValidator());
+
+        // Act
         var userId = await handler.Handle(command, cancellation.Token);
 
-        Assert.Equal(context.Users.AddedUser!.Id, userId);
-        Assert.Equal("secreto", context.PasswordHasher.ReceivedPassword);
-        Assert.Equal("HASH::secreto", context.Users.AddedUser.PasswordHash);
-        Assert.Equal(1, context.UnitOfWork.SaveCount);
-        Assert.Equal(cancellation.Token, context.UnitOfWork.ReceivedCancellationToken);
+        // Assert
+        createdUser.Should().NotBeNull();
+        userId.Should().Be(createdUser!.Id);
+        createdUser.Email.Value.Should().Be(command.Email);
+        createdUser.PasswordHash.Should().Be("HASH::secreto");
+        users.Verify(
+            current => current.GetByIdAsync(admin.Id, cancellation.Token),
+            Times.Once);
+        users.Verify(
+            current => current.ExistsByEmailAsync(command.Email, null, cancellation.Token),
+            Times.Once);
+        passwordHasher.Verify(current => current.Hash(command.Password), Times.Once);
+        clock.VerifyGet(current => current.UtcNow, Times.Once);
+        users.Verify(
+            current => current.AddAsync(
+                It.Is<User>(user => user.Id == userId),
+                cancellation.Token),
+            Times.Once);
+        unitOfWork.Verify(
+            current => current.SaveChangesAsync(cancellation.Token),
+            Times.Once);
+        unitOfWork.VerifyGet(current => current.Users, Times.Exactly(3));
+        unitOfWork.VerifyNoOtherCalls();
+        users.VerifyNoOtherCalls();
+        passwordHasher.VerifyNoOtherCalls();
+        clock.VerifyNoOtherCalls();
     }
 
     [Fact]
