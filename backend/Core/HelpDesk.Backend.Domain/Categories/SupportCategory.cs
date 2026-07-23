@@ -8,7 +8,13 @@ public sealed class SupportCategory : AggregateRoot
 {
     private const int NameMaxLength = 100;
     private const int DescriptionMaxLength = 1000;
-    private readonly List<SlaPolicy> _slaPolicies;
+    private readonly List<SlaPolicy> _slaPolicies = [];
+
+    private SupportCategory()
+    {
+        Name = string.Empty;
+        Description = string.Empty;
+    }
 
     private SupportCategory(
         Guid id,
@@ -20,7 +26,7 @@ public sealed class SupportCategory : AggregateRoot
     {
         Name = name;
         Description = description;
-        _slaPolicies = slaPolicies.ToList();
+        _slaPolicies.AddRange(slaPolicies);
         IsActive = true;
         CreatedAtUtc = now;
         UpdatedAtUtc = now;
@@ -29,7 +35,7 @@ public sealed class SupportCategory : AggregateRoot
     public string Name { get; private set; }
     public string Description { get; private set; }
     public bool IsActive { get; private set; }
-    public DateTimeOffset CreatedAtUtc { get; }
+    public DateTimeOffset CreatedAtUtc { get; private set; }
     public DateTimeOffset UpdatedAtUtc { get; private set; }
     public IReadOnlyCollection<SlaPolicy> SlaPolicies =>
         new ReadOnlyCollection<SlaPolicy>(_slaPolicies);

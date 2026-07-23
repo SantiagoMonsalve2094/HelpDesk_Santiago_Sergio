@@ -5,17 +5,29 @@ namespace HelpDesk.Backend.Domain.Users;
 
 public sealed class TechnicianProfile
 {
-    private readonly HashSet<Guid> _supportCategoryIds;
+    private readonly List<TechnicianCategory> _categoryAssignments = [];
 
     private TechnicianProfile(IEnumerable<Guid> supportCategoryIds, int maxActiveTickets)
     {
-        _supportCategoryIds = supportCategoryIds.ToHashSet();
-        EnsureValidCategories(_supportCategoryIds);
+        var categoryIds = supportCategoryIds.Distinct().ToArray();
+        EnsureValidCategories(categoryIds);
+        _categoryAssignments.AddRange(categoryIds.Select(TechnicianCategory.Create));
         MaxActiveTickets = EnsureValidCapacity(maxActiveTickets);
     }
 
+    private TechnicianProfile()
+    {
+    }
+
     public IReadOnlyCollection<Guid> SupportCategoryIds =>
-        new ReadOnlyCollection<Guid>(_supportCategoryIds.Order().ToList());
+        new ReadOnlyCollection<Guid>(
+            _categoryAssignments
+                .Select(assignment => assignment.SupportCategoryId)
+                .Order()
+                .ToList());
+
+    public IReadOnlyCollection<TechnicianCategory> CategoryAssignments =>
+        new ReadOnlyCollection<TechnicianCategory>(_categoryAssignments);
 
     public int MaxActiveTickets { get; private set; }
 
@@ -25,7 +37,8 @@ public sealed class TechnicianProfile
         return new TechnicianProfile(supportCategoryIds, maxActiveTickets);
     }
 
-    public bool Supports(Guid supportCategoryId) => _supportCategoryIds.Contains(supportCategoryId);
+    public bool Supports(Guid supportCategoryId) =>
+        _categoryAssignments.Any(assignment => assignment.SupportCategoryId == supportCategoryId);
 
     internal void AddCategory(Guid supportCategoryId)
     {
@@ -34,22 +47,27 @@ public sealed class TechnicianProfile
             "SUPPORT_CATEGORY_REQUIRED",
             "La categoría de soporte es obligatoria.");
 
-        _supportCategoryIds.Add(supportCategoryId);
+        if (!Supports(supportCategoryId))
+        {
+            _categoryAssignments.Add(TechnicianCategory.Create(supportCategoryId));
+        }
     }
 
     internal void RemoveCategory(Guid supportCategoryId)
     {
-        if (!_supportCategoryIds.Contains(supportCategoryId))
+        var assignment = _categoryAssignments
+            .SingleOrDefault(item => item.SupportCategoryId == supportCategoryId);
+        if (assignment is null)
         {
             throw new DomainException("TECHNICIAN_CATEGORY_NOT_FOUND", "El técnico no está habilitado para la categoría indicada.");
         }
 
-        if (_supportCategoryIds.Count == 1)
+        if (_categoryAssignments.Count == 1)
         {
             throw new DomainException("TECHNICIAN_REQUIRES_CATEGORY", "Un técnico debe conservar al menos una categoría.");
         }
 
-        _supportCategoryIds.Remove(supportCategoryId);
+        _categoryAssignments.Remove(assignment);
     }
 
     internal void ChangeCapacity(int maxActiveTickets) =>

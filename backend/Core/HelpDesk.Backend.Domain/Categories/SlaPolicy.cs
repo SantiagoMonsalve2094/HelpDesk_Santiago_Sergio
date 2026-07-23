@@ -5,6 +5,10 @@ namespace HelpDesk.Backend.Domain.Categories;
 
 public sealed class SlaPolicy : Entity
 {
+    private SlaPolicy()
+    {
+    }
+
     internal SlaPolicy(Guid id, TicketPriority priority, TimeSpan responseTime)
         : base(id)
     {
@@ -15,7 +19,7 @@ public sealed class SlaPolicy : Entity
             "La duración del SLA debe ser mayor que cero.");
     }
 
-    public TicketPriority Priority { get; }
+    public TicketPriority Priority { get; private set; }
     public TimeSpan ResponseTime { get; private set; }
 
     internal void Update(TimeSpan responseTime)

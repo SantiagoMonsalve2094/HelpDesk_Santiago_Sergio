@@ -18,6 +18,13 @@ public sealed class Ticket : AggregateRoot
     private readonly List<TicketStatusChange> _statusHistory = [];
     private readonly List<TicketSlaCycle> _slaCycles = [];
 
+    private Ticket()
+    {
+        Number = null!;
+        Subject = string.Empty;
+        Description = string.Empty;
+    }
+
     private Ticket(
         Guid id,
         TicketNumber number,
@@ -51,19 +58,19 @@ public sealed class Ticket : AggregateRoot
         _slaCycles.Add(CreateSlaCycle(SlaCycleTrigger.TicketCreation, slaDuration, now));
     }
 
-    public TicketNumber Number { get; }
+    public TicketNumber Number { get; private set; }
     public string Subject { get; private set; }
     public string Description { get; private set; }
-    public Guid CreatorUserId { get; }
-    public Guid SupportCategoryId { get; }
-    public TicketPriority Priority { get; }
+    public Guid CreatorUserId { get; private set; }
+    public Guid SupportCategoryId { get; private set; }
+    public TicketPriority Priority { get; private set; }
     public TicketStatus Status { get; private set; }
     public Guid? CurrentTechnicianUserId { get; private set; }
     public bool IsDeleted { get; private set; }
     public bool IsOverdue => CurrentSlaCycle.Outcome == SlaOutcome.Breached;
     public bool CountsTowardTechnicianCapacity =>
         CurrentTechnicianUserId is not null && Status is TicketStatus.Assigned or TicketStatus.InProgress or TicketStatus.Reopened;
-    public DateTimeOffset CreatedAtUtc { get; }
+    public DateTimeOffset CreatedAtUtc { get; private set; }
     public DateTimeOffset UpdatedAtUtc { get; private set; }
     public DateTimeOffset? ResolvedAtUtc { get; private set; }
     public DateTimeOffset? ClosedAtUtc { get; private set; }

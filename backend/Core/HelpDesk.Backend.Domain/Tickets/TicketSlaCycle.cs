@@ -5,6 +5,10 @@ namespace HelpDesk.Backend.Domain.Tickets;
 
 public sealed class TicketSlaCycle : Entity
 {
+    private TicketSlaCycle()
+    {
+    }
+
     internal TicketSlaCycle(
         Guid id,
         SlaCycleTrigger trigger,
@@ -29,12 +33,12 @@ public sealed class TicketSlaCycle : Entity
         Outcome = SlaOutcome.Pending;
     }
 
-    public SlaCycleTrigger Trigger { get; }
-    public Guid SupportCategoryId { get; }
-    public TicketPriority Priority { get; }
-    public TimeSpan Duration { get; }
-    public DateTimeOffset StartedAtUtc { get; }
-    public DateTimeOffset DeadlineAtUtc { get; }
+    public SlaCycleTrigger Trigger { get; private set; }
+    public Guid SupportCategoryId { get; private set; }
+    public TicketPriority Priority { get; private set; }
+    public TimeSpan Duration { get; private set; }
+    public DateTimeOffset StartedAtUtc { get; private set; }
+    public DateTimeOffset DeadlineAtUtc { get; private set; }
     public DateTimeOffset? RespondedAtUtc { get; private set; }
     public DateTimeOffset? BreachedAtUtc { get; private set; }
     public Guid? ResponsibleTechnicianUserId { get; private set; }

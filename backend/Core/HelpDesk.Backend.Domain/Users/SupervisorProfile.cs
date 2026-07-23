@@ -4,6 +4,10 @@ namespace HelpDesk.Backend.Domain.Users;
 
 public sealed class SupervisorProfile
 {
+    private SupervisorProfile()
+    {
+    }
+
     private SupervisorProfile(Guid supportCategoryId)
     {
         SupportCategoryId = Guard.Required(

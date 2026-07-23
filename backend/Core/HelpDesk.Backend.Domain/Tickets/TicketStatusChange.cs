@@ -5,6 +5,10 @@ namespace HelpDesk.Backend.Domain.Tickets;
 
 public sealed class TicketStatusChange : Entity
 {
+    private TicketStatusChange()
+    {
+    }
+
     internal TicketStatusChange(
         Guid id,
         TicketStatus? previousStatus,
@@ -23,10 +27,10 @@ public sealed class TicketStatusChange : Entity
         ChangedAtUtc = changedAtUtc;
     }
 
-    public TicketStatus? PreviousStatus { get; }
-    public TicketStatus NewStatus { get; }
-    public Guid? ChangedByUserId { get; }
-    public string? Reason { get; }
-    public bool IsAutomatic { get; }
-    public DateTimeOffset ChangedAtUtc { get; }
+    public TicketStatus? PreviousStatus { get; private set; }
+    public TicketStatus NewStatus { get; private set; }
+    public Guid? ChangedByUserId { get; private set; }
+    public string? Reason { get; private set; }
+    public bool IsAutomatic { get; private set; }
+    public DateTimeOffset ChangedAtUtc { get; private set; }
 }

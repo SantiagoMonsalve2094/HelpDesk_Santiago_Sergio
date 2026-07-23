@@ -4,6 +4,10 @@ namespace HelpDesk.Backend.Domain.Tickets;
 
 public sealed class TicketAssignment : Entity
 {
+    private TicketAssignment()
+    {
+    }
+
     internal TicketAssignment(
         Guid id,
         Guid technicianUserId,
@@ -24,11 +28,11 @@ public sealed class TicketAssignment : Entity
         Reason = reason;
     }
 
-    public Guid TechnicianUserId { get; }
-    public Guid AssignedByUserId { get; }
-    public DateTimeOffset AssignedAtUtc { get; }
+    public Guid TechnicianUserId { get; private set; }
+    public Guid AssignedByUserId { get; private set; }
+    public DateTimeOffset AssignedAtUtc { get; private set; }
     public DateTimeOffset? EndedAtUtc { get; private set; }
-    public string? Reason { get; }
+    public string? Reason { get; private set; }
     public bool IsCurrent => EndedAtUtc is null;
 
     internal void End(DateTimeOffset now)

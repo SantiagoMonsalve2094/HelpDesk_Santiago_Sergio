@@ -9,6 +9,13 @@ public sealed class User : AggregateRoot
     private const int FullNameMaxLength = 200;
     private const int PasswordHashMaxLength = 500;
 
+    private User()
+    {
+        FullName = string.Empty;
+        Email = null!;
+        PasswordHash = string.Empty;
+    }
+
     private User(
         Guid id,
         string fullName,
@@ -34,11 +41,11 @@ public sealed class User : AggregateRoot
     public string FullName { get; private set; }
     public EmailAddress Email { get; private set; }
     public string PasswordHash { get; private set; }
-    public UserRole Role { get; }
+    public UserRole Role { get; private set; }
     public bool IsActive { get; private set; }
-    public TechnicianProfile? TechnicianProfile { get; }
-    public SupervisorProfile? SupervisorProfile { get; }
-    public DateTimeOffset CreatedAtUtc { get; }
+    public TechnicianProfile? TechnicianProfile { get; private set; }
+    public SupervisorProfile? SupervisorProfile { get; private set; }
+    public DateTimeOffset CreatedAtUtc { get; private set; }
     public DateTimeOffset UpdatedAtUtc { get; private set; }
 
     public static User CreateUser(string fullName, string email, string passwordHash, DateTimeOffset now) =>

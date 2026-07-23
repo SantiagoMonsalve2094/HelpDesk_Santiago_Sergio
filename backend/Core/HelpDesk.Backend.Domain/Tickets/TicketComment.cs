@@ -7,6 +7,11 @@ public sealed class TicketComment : Entity
 {
     private const int BodyMaxLength = 4000;
 
+    private TicketComment()
+    {
+        Body = string.Empty;
+    }
+
     internal TicketComment(
         Guid id,
         Guid authorUserId,
@@ -30,9 +35,9 @@ public sealed class TicketComment : Entity
         CreatedAtUtc = createdAtUtc;
     }
 
-    public Guid AuthorUserId { get; }
-    public TicketCommentType Type { get; }
-    public string Body { get; }
-    public bool SatisfiesResolutionRequirement { get; }
-    public DateTimeOffset CreatedAtUtc { get; }
+    public Guid AuthorUserId { get; private set; }
+    public TicketCommentType Type { get; private set; }
+    public string Body { get; private set; }
+    public bool SatisfiesResolutionRequirement { get; private set; }
+    public DateTimeOffset CreatedAtUtc { get; private set; }
 }
