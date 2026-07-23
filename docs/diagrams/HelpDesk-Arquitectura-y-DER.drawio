@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-07-23T18:00:00.000Z" agent="Codex" version="30.0.4" type="device" compressed="false">
+  <diagram id="helpdesk-erd" name="DER">
+    <mxGraphModel dx="1900" dy="1260" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1260" math="0" shadow="0" adaptiveColors="auto">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="erd-title" value="HelpDesk - Diagrama entidad-relación" style="text;html=1;fontSize=22;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="900" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-note" value="Borrador lógico basado en el dominio actual. Las tablas, tipos SQL, índices y restricciones definitivas se ajustarán al implementar EF Core y SQL Server." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="70" width="1500" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="users" value="USERS" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="160" width="340" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="users-fields" value="PK  Id : Guid&#xa;UK  Email : EmailAddress (254)&#xa;     FullName : string (200)&#xa;     PasswordHash : string (500)&#xa;     Role : UserRole&#xa;     IsActive : bool&#xa;FK? SupervisorSupportCategoryId : Guid?&#xa;     MaxActiveTickets : int?&#xa;     CreatedAtUtc : DateTimeOffset&#xa;     UpdatedAtUtc : DateTimeOffset" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="users">
+          <mxGeometry x="8" y="42" width="324" height="246" as="geometry"/>
+        </mxCell>
+        <mxCell id="technician-categories" value="TECHNICIAN_CATEGORIES" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="180" width="300" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="technician-categories-fields" value="PK, FK  TechnicianUserId : Guid&#xa;PK, FK  SupportCategoryId : Guid&#xa;&#xa;Relación N:M para las categorías que puede atender cada técnico." style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="technician-categories">
+          <mxGeometry x="8" y="42" width="284" height="116" as="geometry"/>
+        </mxCell>
+        <mxCell id="support-categories" value="SUPPORT_CATEGORIES" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="160" width="340" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="support-categories-fields" value="PK  Id : Guid&#xa;UK  Name : string (100)&#xa;     Description : string (1000)&#xa;     IsActive : bool&#xa;     CreatedAtUtc : DateTimeOffset&#xa;     UpdatedAtUtc : DateTimeOffset&#xa;&#xa;Se desactiva; no se elimina cuando ya fue utilizada." style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="support-categories">
+          <mxGeometry x="8" y="42" width="324" height="206" as="geometry"/>
+        </mxCell>
+        <mxCell id="sla-policies" value="SLA_POLICIES" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="180" width="300" height="190" as="geometry"/>
+        </mxCell>
+        <mxCell id="sla-policies-fields" value="PK  Id : Guid&#xa;FK  SupportCategoryId : Guid&#xa;UK  Priority : TicketPriority&#xa;     ResponseTime : TimeSpan&#xa;&#xa;Una categoría activa exige las cuatro prioridades." style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="sla-policies">
+          <mxGeometry x="8" y="42" width="284" height="136" as="geometry"/>
+        </mxCell>
+        <mxCell id="tickets" value="TICKETS" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="500" width="400" height="390" as="geometry"/>
+        </mxCell>
+        <mxCell id="tickets-fields" value="PK  Id : Guid&#xa;UK  TicketNumber : TicketNumber&#xa;     Subject : string (200)&#xa;     Description : string (4000)&#xa;FK  CreatorUserId : Guid&#xa;FK  SupportCategoryId : Guid&#xa;     Priority : TicketPriority&#xa;     Status : TicketStatus&#xa;FK? CurrentTechnicianUserId : Guid?&#xa;     IsDeleted : bool&#xa;     CreatedAtUtc : DateTimeOffset&#xa;     UpdatedAtUtc : DateTimeOffset&#xa;     ResolvedAtUtc : DateTimeOffset?&#xa;     ClosedAtUtc : DateTimeOffset?" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="tickets">
+          <mxGeometry x="8" y="42" width="384" height="336" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-assignments" value="TICKET_ASSIGNMENTS" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="540" width="370" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-assignments-fields" value="PK  Id : Guid&#xa;FK  TicketId : Guid&#xa;FK  TechnicianUserId : Guid&#xa;FK  AssignedByUserId : Guid&#xa;     AssignedAtUtc : DateTimeOffset&#xa;     EndedAtUtc : DateTimeOffset?&#xa;     Reason : string? (1000)&#xa;&#xa;Conserva el historial completo de asignaciones." style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="ticket-assignments">
+          <mxGeometry x="8" y="42" width="354" height="206" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-comments" value="TICKET_COMMENTS" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="850" width="370" height="250" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-comments-fields" value="PK  Id : Guid&#xa;FK  TicketId : Guid&#xa;FK  AuthorUserId : Guid&#xa;     Type : TicketCommentType&#xa;     Body : string (4000)&#xa;     SatisfiesResolutionRequirement : bool&#xa;     CreatedAtUtc : DateTimeOffset" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="ticket-comments">
+          <mxGeometry x="8" y="42" width="354" height="196" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-status-history" value="TICKET_STATUS_HISTORY" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="850" width="400" height="280" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-status-history-fields" value="PK  Id : Guid&#xa;FK  TicketId : Guid&#xa;     PreviousStatus : TicketStatus?&#xa;     NewStatus : TicketStatus&#xa;FK? ChangedByUserId : Guid?&#xa;     Reason : string? (1000)&#xa;     IsAutomatic : bool&#xa;     ChangedAtUtc : DateTimeOffset" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="ticket-status-history">
+          <mxGeometry x="8" y="42" width="384" height="226" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-sla-cycles" value="TICKET_SLA_CYCLES" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1450" y="500" width="410" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="ticket-sla-cycles-fields" value="PK  Id : Guid&#xa;FK  TicketId : Guid&#xa;FK  SupportCategoryId : Guid&#xa;     Trigger : SlaCycleTrigger&#xa;     Priority : TicketPriority&#xa;     Duration : TimeSpan&#xa;     StartedAtUtc : DateTimeOffset&#xa;     DeadlineAtUtc : DateTimeOffset&#xa;     RespondedAtUtc : DateTimeOffset?&#xa;     BreachedAtUtc : DateTimeOffset?&#xa;FK? ResponsibleTechnicianUserId : Guid?&#xa;     Outcome : SlaOutcome&#xa;&#xa;Reasignar no crea un ciclo nuevo ni reinicia el SLA." style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=8;spacingTop=8;fontSize=12;" vertex="1" parent="ticket-sla-cycles">
+          <mxGeometry x="8" y="42" width="394" height="306" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-1" value="habilita" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="users" target="technician-categories" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-2" value="incluye" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="support-categories" target="technician-categories" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-3" value="define cuatro" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="support-categories" target="sla-policies" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-4" value="crea" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="users" target="tickets" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-5" value="clasifica" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="support-categories" target="tickets" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-7" value="asignaciones" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="tickets" target="ticket-assignments" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-9" value="comentarios" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="tickets" target="ticket-comments" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-11" value="estados" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="tickets" target="ticket-status-history" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-edge-13" value="ciclos SLA" style="edgeStyle=entityRelationEdgeStyle;html=1;rounded=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" edge="1" source="tickets" target="ticket-sla-cycles" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="erd-legend" value="PK: clave primaria   FK: clave foránea   UK: restricción única. Las FK de auditoría hacia USERS y la categoría conservada en cada ciclo SLA se detallan dentro de las entidades para mantener legible el diagrama." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="1170" width="1000" height="50" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="helpdesk-architecture" name="Arquitectura"><mxGraphModel dx="1900" dy="1050" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1050" math="0" shadow="0" adaptiveColors="auto">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="arch-title" value="HelpDesk - Arquitectura por capas" style="text;html=1;fontSize=22;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="20" width="900" height="40" as="geometry"/></mxCell>
+    <mxCell id="arch-subtitle" value=".NET 8 + React + SQL Server | DDD, Clean Architecture y CQRS con MediatR" style="text;html=1;fontSize=14;align=left;verticalAlign=middle;fontColor=#666666;" vertex="1" parent="1"><mxGeometry x="40" y="60" width="1100" height="30" as="geometry"/></mxCell>
+    <mxCell id="actors" value="Usuarios internos" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;rounded=1;" vertex="1" parent="1"><mxGeometry x="40" y="190" width="230" height="310" as="geometry"/></mxCell>
+    <mxCell id="actor-user" value="Usuario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1" parent="actors"><mxGeometry x="35" y="55" width="160" height="45" as="geometry"/></mxCell>
+    <mxCell id="actor-technician" value="Técnico" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1" parent="actors"><mxGeometry x="35" y="115" width="160" height="45" as="geometry"/></mxCell>
+    <mxCell id="actor-supervisor" value="Supervisor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1" parent="actors"><mxGeometry x="35" y="175" width="160" height="45" as="geometry"/></mxCell>
+    <mxCell id="actor-admin" value="SuperAdmin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1" parent="actors"><mxGeometry x="35" y="235" width="160" height="45" as="geometry"/></mxCell>
+    <mxCell id="frontend" value="Frontend - Planificado" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;dashed=1;" vertex="1" parent="1"><mxGeometry x="340" y="240" width="280" height="200" as="geometry"/></mxCell>
+    <mxCell id="react-spa" value="React SPA&#xa;&#xa;Vistas por rol&#xa;Tickets propios y asignados&#xa;Reportes de SLA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;align=center;" vertex="1" parent="frontend"><mxGeometry x="35" y="55" width="210" height="115" as="geometry"/></mxCell>
+    <mxCell id="backend" value="Backend HelpDesk - .NET 8" style="swimlane;startSize=38;html=1;fontStyle=1;fontSize=14;fillColor=#f5f5f5;strokeColor=#666666;rounded=1;" vertex="1" parent="1"><mxGeometry x="700" y="120" width="900" height="730" as="geometry"/></mxCell>
+    <mxCell id="presentation" value="Presentation / API&#xa;Planificado" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;dashed=1;" vertex="1" parent="backend"><mxGeometry x="40" y="70" width="220" height="180" as="geometry"/></mxCell>
+    <mxCell id="presentation-detail" value="ASP.NET Core API&#xa;Controladores delgados&#xa;JWT / autorización&#xa;OpenAPI&#xa;Composition root / DI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="presentation"><mxGeometry x="20" y="50" width="180" height="105" as="geometry"/></mxCell>
+    <mxCell id="application" value="Application - Implementado" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;strokeWidth=2;" vertex="1" parent="backend"><mxGeometry x="320" y="70" width="250" height="270" as="geometry"/></mxCell>
+    <mxCell id="application-detail" value="CQRS + MediatR 14&#xa;FluentValidation 12&#xa;&#xa;Features: usuarios, categorías y tickets&#xa;Commands, Queries y Handlers&#xa;Puertos de escritura y lectura&#xa;Unit of Work, reloj, hashing y consecutivo&#xa;Jobs expresados como casos de uso" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="application"><mxGeometry x="20" y="50" width="210" height="190" as="geometry"/></mxCell>
+    <mxCell id="domain" value="Domain - Implementado" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;strokeWidth=2;" vertex="1" parent="backend"><mxGeometry x="630" y="70" width="230" height="300" as="geometry"/></mxCell>
+    <mxCell id="domain-detail" value="Agregados&#xa;Ticket, User, SupportCategory&#xa;&#xa;Entities y Value Objects&#xa;Políticas de dominio&#xa;Invariantes de negocio&#xa;Domain Events&#xa;SLA e historiales" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="domain"><mxGeometry x="18" y="50" width="194" height="220" as="geometry"/></mxCell>
+    <mxCell id="jobs" value="Ejecución de jobs&#xa;Planificada" style="swimlane;startSize=44;html=1;fontStyle=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;dashed=1;" vertex="1" parent="backend"><mxGeometry x="40" y="430" width="220" height="180" as="geometry"/></mxCell>
+    <mxCell id="jobs-detail" value="Scheduler pendiente&#xa;&#xa;Application ya expone:&#xa;Evaluar SLA pendiente&#xa;Cerrar resueltos a las 48 h" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;" vertex="1" parent="jobs"><mxGeometry x="20" y="60" width="180" height="95" as="geometry"/></mxCell>
+    <mxCell id="infrastructure" value="Infrastructure - Planificado" style="swimlane;startSize=34;html=1;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;dashed=1;" vertex="1" parent="backend"><mxGeometry x="320" y="410" width="300" height="240" as="geometry"/></mxCell>
+    <mxCell id="infrastructure-detail" value="EF Core 8&#xa;DbContext y configuraciones&#xa;Repositorios / Unit of Work&#xa;Migraciones SQL Server&#xa;Servicios técnicos&#xa;Implementación de puertos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="infrastructure"><mxGeometry x="25" y="50" width="250" height="160" as="geometry"/></mxCell>
+    <mxCell id="application-tests" value="Tests de Application&#xa;44 pruebas con fakes propios&#xa;Permisos, SLA, capacidad, visibilidad y reportes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="backend"><mxGeometry x="650" y="430" width="210" height="120" as="geometry"/></mxCell>
+    <mxCell id="database" value="SQL Server&#xa;Planificado" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;dashed=1;" vertex="1" parent="1"><mxGeometry x="1690" y="410" width="150" height="110" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-1" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;" edge="1" source="actors" target="frontend" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-2" value="HTTPS / JSON" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;" edge="1" source="react-spa" target="presentation" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-3" value="envía Commands / Queries" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;" edge="1" source="presentation" target="application" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-4" value="orquesta agregados" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;" edge="1" source="application" target="domain" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-5" value="implementa puertos" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;dashed=1;strokeColor=#9673a6;" edge="1" source="infrastructure" target="application" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-6" value="mapea agregados" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;dashed=1;strokeColor=#9673a6;" edge="1" source="infrastructure" target="domain" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-7" value="invoca casos de uso" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;dashed=1;strokeColor=#d6b656;" edge="1" source="jobs" target="application" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-8" value="verifica" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;dashed=1;strokeColor=#d6b656;" edge="1" source="application-tests" target="application" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-edge-9" value="EF Core / T-SQL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;dashed=1;strokeColor=#9673a6;" edge="1" source="infrastructure" target="database" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="arch-legend" value="Estado actual: Domain y Application están implementados y probados. Las cajas con borde discontinuo representan componentes o mecanismos de ejecución planificados para próximas entregas. El DER se conserva sin cambios hasta implementar persistencia." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=12;align=left;spacingLeft=12;" vertex="1" parent="1"><mxGeometry x="340" y="900" width="1260" height="55" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel></diagram>
+</mxfile>
