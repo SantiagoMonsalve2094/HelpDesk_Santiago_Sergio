@@ -13,4 +13,17 @@ internal sealed class AspNetCorePasswordHasher : IPasswordHasher
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
         return _passwordHasher.HashPassword(PasswordOwner, password);
     }
+
+    public bool Verify(string passwordHash, string password)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash);
+        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+
+        var result = _passwordHasher.VerifyHashedPassword(
+            PasswordOwner,
+            passwordHash,
+            password);
+        return result is PasswordVerificationResult.Success or
+            PasswordVerificationResult.SuccessRehashNeeded;
+    }
 }

@@ -15,6 +15,16 @@ internal sealed class UserRepository(HelpDeskDbContext dbContext)
             user => user.Id == id,
             cancellationToken);
 
+    public Task<User?> GetByEmailAsync(
+        string email,
+        CancellationToken cancellationToken)
+    {
+        var normalizedEmail = EmailAddress.Create(email);
+        return dbContext.Users.SingleOrDefaultAsync(
+            user => user.Email == normalizedEmail,
+            cancellationToken);
+    }
+
     public Task<bool> ExistsByEmailAsync(
         string email,
         Guid? excludingUserId,

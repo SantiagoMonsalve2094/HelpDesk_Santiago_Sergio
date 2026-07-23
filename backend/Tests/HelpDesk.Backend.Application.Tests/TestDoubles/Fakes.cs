@@ -19,11 +19,33 @@ internal sealed class FakeClock(DateTimeOffset utcNow) : IClock
 internal sealed class FakePasswordHasher : IPasswordHasher
 {
     public string? ReceivedPassword { get; private set; }
+    public string? ReceivedHash { get; private set; }
+    public bool VerificationResult { get; set; } = true;
 
     public string Hash(string password)
     {
         ReceivedPassword = password;
         return $"HASH::{password}";
+    }
+
+    public bool Verify(string passwordHash, string password)
+    {
+        ReceivedHash = passwordHash;
+        ReceivedPassword = password;
+        return VerificationResult;
+    }
+}
+
+internal sealed class FakeAccessTokenGenerator : IAccessTokenGenerator
+{
+    internal User? ReceivedUser { get; private set; }
+    internal AccessTokenResult Result { get; set; } =
+        new("access-token", ApplicationTestData.Now.AddHours(1));
+
+    public AccessTokenResult Generate(User user)
+    {
+        ReceivedUser = user;
+        return Result;
     }
 }
 
@@ -51,6 +73,16 @@ internal sealed class FakeUserRepository : IUserRepository
     {
         ReceivedCancellationToken = cancellationToken;
         Items.TryGetValue(id, out var user);
+        return Task.FromResult(user);
+    }
+
+    public Task<User?> GetByEmailAsync(
+        string email,
+        CancellationToken cancellationToken)
+    {
+        ReceivedCancellationToken = cancellationToken;
+        var user = Items.Values.SingleOrDefault(candidate =>
+            string.Equals(candidate.Email.Value, email.Trim(), StringComparison.OrdinalIgnoreCase));
         return Task.FromResult(user);
     }
 
