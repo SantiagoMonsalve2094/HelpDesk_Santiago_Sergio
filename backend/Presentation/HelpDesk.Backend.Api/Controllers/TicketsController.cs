@@ -1,6 +1,6 @@
-using HelpDesk.Backend.Api.Authorization;
-using HelpDesk.Backend.Api.Contracts;
-using HelpDesk.Backend.Application.Common.Models;
+using HelpDesk.Backend.Api.Security;
+using HelpDesk.Backend.Api.DTOs.Tickets;
+using HelpDesk.Backend.Application.DTOs.Common;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.AddTicketComment;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.AssignTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.CloseTicket;
@@ -12,7 +12,7 @@ using HelpDesk.Backend.Application.Features.Tickets.Commands.ReopenTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ResolveTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.StartTicketProgress;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.UpdateTicket;
-using HelpDesk.Backend.Application.Features.Tickets.Models;
+using HelpDesk.Backend.Application.DTOs.Tickets;
 using HelpDesk.Backend.Application.Features.Tickets.Queries.GetAssignableTechnicians;
 using HelpDesk.Backend.Application.Features.Tickets.Queries.GetTicketById;
 using HelpDesk.Backend.Application.Features.Tickets.Queries.GetTickets;
@@ -68,7 +68,7 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
 
     [HttpPost]
     public async Task<ActionResult<CreatedTicketResponse>> Create(
-        CreateTicketRequest request,
+        CreateTicketApiRequest request,
         CancellationToken cancellationToken)
     {
         var response = await sender.Send(
@@ -88,7 +88,7 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(
         Guid id,
-        UpdateTicketRequest request,
+        UpdateTicketApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -115,7 +115,7 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
     [HttpPost("{id:guid}/comments")]
     public async Task<IActionResult> Comment(
         Guid id,
-        AddTicketCommentRequest request,
+        AddTicketCommentApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -128,7 +128,7 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SupervisorOrSuperAdmin)]
     public async Task<IActionResult> Assign(
         Guid id,
-        AssignTicketRequest request,
+        AssignTicketApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -141,7 +141,7 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SupervisorOrSuperAdmin)]
     public async Task<IActionResult> Reassign(
         Guid id,
-        ReassignTicketRequest request,
+        ReassignTicketApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -170,7 +170,7 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.TechnicianSupervisorOrSuperAdmin)]
     public async Task<IActionResult> Resolve(
         Guid id,
-        ResolveTicketRequest request,
+        ResolveTicketApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -208,7 +208,7 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SupervisorOrSuperAdmin)]
     public async Task<IActionResult> ForceStatus(
         Guid id,
-        ForceTicketStatusRequest request,
+        ForceTicketStatusApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(

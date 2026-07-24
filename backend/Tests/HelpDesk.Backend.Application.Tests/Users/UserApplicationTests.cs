@@ -1,14 +1,14 @@
 using FluentValidation;
 using FluentAssertions;
-using HelpDesk.Backend.Application.Abstractions;
-using HelpDesk.Backend.Application.Abstractions.Persistence;
+using HelpDesk.Backend.Application.Interfaces;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
 using HelpDesk.Backend.Application.Features.Users.Commands.CreateUser;
 using HelpDesk.Backend.Application.Features.Users.Commands.UpdateTechnicianProfile;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUserById;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUsers;
 using HelpDesk.Backend.Application.Tests.TestDoubles;
 using HelpDesk.Backend.Domain.Enums;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using Moq;
 
 namespace HelpDesk.Backend.Application.Tests.Users;

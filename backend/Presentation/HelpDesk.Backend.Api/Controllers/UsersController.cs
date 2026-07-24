@@ -1,13 +1,13 @@
-using HelpDesk.Backend.Api.Authorization;
-using HelpDesk.Backend.Api.Contracts;
-using HelpDesk.Backend.Application.Common.Models;
+using HelpDesk.Backend.Api.Security;
+using HelpDesk.Backend.Api.DTOs.Users;
+using HelpDesk.Backend.Application.DTOs.Common;
 using HelpDesk.Backend.Application.Features.Users.Commands.ChangeSupervisorCategory;
 using HelpDesk.Backend.Application.Features.Users.Commands.CreateUser;
 using HelpDesk.Backend.Application.Features.Users.Commands.ResetUserPassword;
 using HelpDesk.Backend.Application.Features.Users.Commands.SetUserActive;
 using HelpDesk.Backend.Application.Features.Users.Commands.UpdateTechnicianProfile;
 using HelpDesk.Backend.Application.Features.Users.Commands.UpdateUserIdentity;
-using HelpDesk.Backend.Application.Features.Users.Models;
+using HelpDesk.Backend.Application.DTOs.Users;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUserById;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUsers;
 using HelpDesk.Backend.Domain.Enums;
@@ -57,7 +57,7 @@ public sealed class UsersController(ISender sender) : ApiControllerBase
     [HttpPost]
     [Authorize(Roles = RoleNames.SupervisorOrSuperAdmin)]
     public async Task<ActionResult<Guid>> Create(
-        CreateUserRequest request,
+        CreateUserApiRequest request,
         CancellationToken cancellationToken)
     {
         var id = await sender.Send(
@@ -77,7 +77,7 @@ public sealed class UsersController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> UpdateIdentity(
         Guid id,
-        UpdateUserIdentityRequest request,
+        UpdateUserIdentityApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -94,7 +94,7 @@ public sealed class UsersController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> ResetPassword(
         Guid id,
-        ResetUserPasswordRequest request,
+        ResetUserPasswordApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -107,7 +107,7 @@ public sealed class UsersController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> SetActive(
         Guid id,
-        SetActiveRequest request,
+        SetUserActiveApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -120,7 +120,7 @@ public sealed class UsersController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> UpdateTechnicianProfile(
         Guid id,
-        UpdateTechnicianProfileRequest request,
+        UpdateTechnicianProfileApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -137,7 +137,7 @@ public sealed class UsersController(ISender sender) : ApiControllerBase
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> ChangeSupervisorCategory(
         Guid id,
-        ChangeSupervisorCategoryRequest request,
+        ChangeSupervisorCategoryApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(

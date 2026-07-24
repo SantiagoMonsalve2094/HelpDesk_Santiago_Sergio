@@ -1,6 +1,6 @@
-using HelpDesk.Backend.Domain.Categories;
-using HelpDesk.Backend.Domain.Tickets;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
+using HelpDesk.Backend.Domain.Aggregates.Tickets;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

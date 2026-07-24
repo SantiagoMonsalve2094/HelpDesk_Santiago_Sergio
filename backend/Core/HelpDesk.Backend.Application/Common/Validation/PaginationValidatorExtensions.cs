@@ -1,4 +1,5 @@
 using FluentValidation;
+using HelpDesk.Backend.Application.Resources;
 using System.Linq.Expressions;
 
 namespace HelpDesk.Backend.Application.Common.Validation;
@@ -16,10 +17,10 @@ internal static class PaginationValidatorExtensions
     {
         validator.RuleFor(pageNumber)
             .GreaterThanOrEqualTo(DefaultPageNumber)
-            .WithErrorCode("INVALID_PAGE_NUMBER");
+            .WithErrorCode(ApplicationErrorCodes.InvalidPageNumber);
 
         validator.RuleFor(pageSize)
             .InclusiveBetween(1, MaximumPageSize)
-            .WithErrorCode("INVALID_PAGE_SIZE");
+            .WithErrorCode(ApplicationErrorCodes.InvalidPageSize);
     }
 }

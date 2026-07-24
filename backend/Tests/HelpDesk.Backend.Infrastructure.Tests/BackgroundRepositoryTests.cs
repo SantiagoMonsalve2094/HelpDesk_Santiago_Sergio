@@ -1,4 +1,4 @@
-using HelpDesk.Backend.Application.Abstractions.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
 using HelpDesk.Backend.Domain.Enums;
 using HelpDesk.Backend.Infrastructure.Tests.TestSupport;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +13,7 @@ public sealed class BackgroundRepositoryTests
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Monitoreo");
         var creator = InfrastructureTestData.CreateUser(
-            "Usuario Monitoreo",
+            "Santiago Monsalve",
             "monitoreo@helpdesk.local");
         var technician = InfrastructureTestData.CreateTechnician(
             "Técnico Monitoreo",
@@ -58,7 +58,7 @@ public sealed class BackgroundRepositoryTests
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Aplicaciones");
         var creator = InfrastructureTestData.CreateUser(
-            "Usuario Aplicaciones",
+            "Mariana López",
             "aplicaciones@helpdesk.local");
         var technician = InfrastructureTestData.CreateTechnician(
             "Técnico Aplicaciones",

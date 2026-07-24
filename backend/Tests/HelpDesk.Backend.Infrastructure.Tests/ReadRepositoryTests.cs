@@ -1,8 +1,12 @@
-using HelpDesk.Backend.Application.Abstractions.Persistence;
-using HelpDesk.Backend.Application.Abstractions.Queries;
-using HelpDesk.Backend.Application.Features.Tickets.Models;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
+using HelpDesk.Backend.Application.DTOs.SupportCategories;
+using HelpDesk.Backend.Application.DTOs.Users;
+using HelpDesk.Backend.Application.Interfaces.Queries;
+using HelpDesk.Backend.Application.DTOs.Sla;
+using HelpDesk.Backend.Application.DTOs.Tickets;
+using HelpDesk.Backend.Application.Features.Tickets;
 using HelpDesk.Backend.Domain.Enums;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Infrastructure.Tests.TestSupport;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -88,7 +92,7 @@ public sealed class ReadRepositoryTests
             hardware.Id,
             InfrastructureTestData.Now);
         var superAdmin = User.CreateSuperAdmin(
-            "Administrador",
+            "Santiago Monsalve",
             "admin@helpdesk.local",
             "hash-admin",
             InfrastructureTestData.Now);
@@ -179,7 +183,7 @@ public sealed class ReadRepositoryTests
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Telefonía");
         var creator = InfrastructureTestData.CreateUser(
-            "Usuario Telefonía",
+            "Daniel Torres",
             "telefonia@helpdesk.local");
         var busyTechnician = InfrastructureTestData.CreateTechnician(
             "Técnico Ocupado",
@@ -226,7 +230,7 @@ public sealed class ReadRepositoryTests
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Accesos");
         var creator = InfrastructureTestData.CreateUser(
-            "Usuario Accesos",
+            "Camila Restrepo",
             "accesos@helpdesk.local");
         var technician = InfrastructureTestData.CreateTechnician(
             "Técnico Accesos",
@@ -234,7 +238,7 @@ public sealed class ReadRepositoryTests
             [category.Id],
             5);
         var superAdmin = User.CreateSuperAdmin(
-            "Administrador SLA",
+            "Santiago Monsalve",
             "admin.sla@helpdesk.local",
             "hash-admin",
             InfrastructureTestData.Now);
@@ -310,7 +314,7 @@ public sealed class ReadRepositoryTests
         Assert.Null(unassigned.CompliancePercentage);
     }
 
-    private static Task<HelpDesk.Backend.Application.Common.Models.PagedResponse<TicketSummaryResponse>>
+    private static Task<HelpDesk.Backend.Application.DTOs.Common.PagedResponse<TicketSummaryResponse>>
         GetTicketsAsync(
             ITicketReadRepository repository,
             TicketVisibilityScope visibility) =>

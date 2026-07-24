@@ -1,6 +1,6 @@
 using HelpDesk.Backend.Application.Features.SupportCategories.Commands.CreateSupportCategory;
 using HelpDesk.Backend.Application.Features.SupportCategories.Commands.SetSupportCategoryActive;
-using HelpDesk.Backend.Application.Features.SupportCategories.Commands.UpdateCategorySla;
+using HelpDesk.Backend.Application.Features.SupportCategories.Commands.UpdateSupportCategorySla;
 using HelpDesk.Backend.Application.Features.SupportCategories.Queries.GetSupportCategories;
 using HelpDesk.Backend.Application.Features.SupportCategories.Queries.GetSupportCategoryById;
 using HelpDesk.Backend.Application.Tests.TestDoubles;
@@ -72,13 +72,13 @@ public sealed class SupportCategoryApplicationTests
         var supervisor = ApplicationTestData.Supervisor(category.Id);
         context.Add(category);
         context.Add(supervisor);
-        var handler = new UpdateCategorySlaHandler(
+        var handler = new UpdateSupportCategorySlaHandler(
             context.UnitOfWork,
             context.Clock,
-            new UpdateCategorySlaValidator());
+            new UpdateSupportCategorySlaValidator());
 
         await handler.Handle(
-            new UpdateCategorySlaCommand(
+            new UpdateSupportCategorySlaCommand(
                 supervisor.Id,
                 category.Id,
                 TicketPriority.High,
@@ -97,14 +97,14 @@ public sealed class SupportCategoryApplicationTests
         var supervisor = ApplicationTestData.Supervisor(ownCategory.Id);
         context.Add(ownCategory, otherCategory);
         context.Add(supervisor);
-        var handler = new UpdateCategorySlaHandler(
+        var handler = new UpdateSupportCategorySlaHandler(
             context.UnitOfWork,
             context.Clock,
-            new UpdateCategorySlaValidator());
+            new UpdateSupportCategorySlaValidator());
 
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
             handler.Handle(
-                new UpdateCategorySlaCommand(
+                new UpdateSupportCategorySlaCommand(
                     supervisor.Id,
                     otherCategory.Id,
                     TicketPriority.High,

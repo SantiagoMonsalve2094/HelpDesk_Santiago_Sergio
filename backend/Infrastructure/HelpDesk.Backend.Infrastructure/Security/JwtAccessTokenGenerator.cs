@@ -2,8 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using HelpDesk.Backend.Application.Abstractions;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Application.DTOs.Auth;
+using HelpDesk.Backend.Application.Interfaces;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

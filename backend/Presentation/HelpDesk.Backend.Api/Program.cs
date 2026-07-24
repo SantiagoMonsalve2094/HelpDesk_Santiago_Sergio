@@ -7,6 +7,7 @@ using System.Threading.RateLimiting;
 using HelpDesk.Backend.Api.Errors;
 using HelpDesk.Backend.Api.Middleware;
 using HelpDesk.Backend.Api.ModelBinding;
+using HelpDesk.Backend.Api.Resources;
 using HelpDesk.Backend.Application;
 using HelpDesk.Backend.Infrastructure;
 using HelpDesk.Backend.Infrastructure.Persistence;
@@ -41,17 +42,17 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
             .Where(entry => entry.Value?.Errors.Count > 0)
             .SelectMany(entry => entry.Value!.Errors.Select(error =>
                 new ApiErrorDetail(
-                    "INVALID_REQUEST",
+                    ApiErrorCodes.InvalidRequest,
                     string.IsNullOrWhiteSpace(error.ErrorMessage)
-                        ? "El valor enviado no es válido."
+                        ? ApiMessages.InvalidFieldValue
                         : error.ErrorMessage,
                     ToCamelCase(entry.Key))))
             .ToArray();
         return new BadRequestObjectResult(
             new ApiErrorResponse(
                 StatusCodes.Status400BadRequest,
-                "Solicitud inválida",
-                "Uno o más campos de la solicitud son inválidos.",
+                ApiMessages.InvalidRequestTitle,
+                ApiMessages.InvalidFields,
                 context.HttpContext.TraceIdentifier,
                 errors));
     };
@@ -87,14 +88,14 @@ builder.Services
                 await ApiErrorWriter.WriteAsync(
                     context.HttpContext,
                     StatusCodes.Status401Unauthorized,
-                    "No autenticado",
-                    "Se requiere un token de acceso válido.");
+                    ApiMessages.UnauthenticatedTitle,
+                    ApiMessages.ValidAccessTokenRequired);
             },
             OnForbidden = context => ApiErrorWriter.WriteAsync(
                 context.HttpContext,
                 StatusCodes.Status403Forbidden,
-                "Acceso denegado",
-                "El usuario no tiene permisos para ejecutar esta operación.")
+                ApiMessages.AccessDeniedTitle,
+                ApiMessages.OperationNotAllowed)
         };
     });
 builder.Services.AddAuthorization();
@@ -138,8 +139,8 @@ builder.Services.AddRateLimiter(options =>
         await ApiErrorWriter.WriteAsync(
             context.HttpContext,
             StatusCodes.Status429TooManyRequests,
-            "Demasiados intentos",
-            "Se permiten máximo cinco intentos de inicio de sesión por minuto.");
+            ApiMessages.TooManyAttemptsTitle,
+            ApiMessages.TooManyLoginAttempts);
     };
 });
 
@@ -156,7 +157,7 @@ builder.Services.AddSwaggerGen(options =>
     var bearerScheme = new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Description = "Ingrese el token JWT con el prefijo Bearer.",
+        Description = ApiMessages.SwaggerBearerDescription,
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
         Scheme = "bearer",

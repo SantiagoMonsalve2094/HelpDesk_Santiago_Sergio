@@ -1,9 +1,9 @@
-using HelpDesk.Backend.Application.Abstractions;
-using HelpDesk.Backend.Application.Abstractions.Persistence;
-using HelpDesk.Backend.Application.Abstractions.Queries;
-using HelpDesk.Backend.Domain.Categories;
-using HelpDesk.Backend.Domain.Tickets;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Application.Interfaces;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Queries;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
+using HelpDesk.Backend.Domain.Aggregates.Tickets;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Infrastructure;
 using HelpDesk.Backend.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -130,7 +130,7 @@ public sealed class DependencyInjectionAndModelTests
         using var provider = services.BuildServiceProvider();
         var generator = provider.GetRequiredService<IAccessTokenGenerator>();
         var user = User.CreateSuperAdmin(
-            "Administrador",
+            "Santiago Monsalve",
             "admin@example.com",
             "hash",
             DateTimeOffset.UtcNow);

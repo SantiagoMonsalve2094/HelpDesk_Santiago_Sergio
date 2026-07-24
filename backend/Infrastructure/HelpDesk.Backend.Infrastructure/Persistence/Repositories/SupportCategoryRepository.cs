@@ -1,5 +1,5 @@
-using HelpDesk.Backend.Application.Abstractions.Persistence;
-using HelpDesk.Backend.Domain.Categories;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
 using Microsoft.EntityFrameworkCore;
 
 namespace HelpDesk.Backend.Infrastructure.Persistence.Repositories;

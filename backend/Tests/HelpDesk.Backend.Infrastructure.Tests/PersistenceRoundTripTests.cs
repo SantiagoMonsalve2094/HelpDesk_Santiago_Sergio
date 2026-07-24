@@ -1,6 +1,6 @@
-using HelpDesk.Backend.Application.Abstractions.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
 using HelpDesk.Backend.Domain.Enums;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Infrastructure.Persistence;
 using HelpDesk.Backend.Infrastructure.Tests.TestSupport;
 using Microsoft.EntityFrameworkCore;
@@ -128,7 +128,7 @@ public sealed class PersistenceRoundTripTests
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Redes");
         var creator = InfrastructureTestData.CreateUser(
-            "Usuario Redes",
+            "Santiago Monsalve",
             "redes@helpdesk.local");
         var ticket = InfrastructureTestData.CreateTicket(1, creator, category);
 
@@ -181,7 +181,7 @@ public sealed class PersistenceRoundTripTests
     {
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var user = InfrastructureTestData.CreateUser(
-            "Usuario Concurrente",
+            "Juan Reyes",
             "concurrencia@helpdesk.local");
 
         await using (var seedScope = database.CreateScope())

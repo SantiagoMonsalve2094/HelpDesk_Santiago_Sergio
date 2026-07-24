@@ -1,4 +1,4 @@
-using HelpDesk.Backend.Application.Abstractions;
+using HelpDesk.Backend.Application.Interfaces;
 
 namespace HelpDesk.Backend.Infrastructure.Services;
 

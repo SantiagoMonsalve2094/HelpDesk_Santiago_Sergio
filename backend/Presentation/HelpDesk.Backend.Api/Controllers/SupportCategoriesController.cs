@@ -1,11 +1,11 @@
-using HelpDesk.Backend.Api.Authorization;
-using HelpDesk.Backend.Api.Contracts;
-using HelpDesk.Backend.Application.Common.Models;
+using HelpDesk.Backend.Api.Security;
+using HelpDesk.Backend.Api.DTOs.SupportCategories;
+using HelpDesk.Backend.Application.DTOs.Common;
 using HelpDesk.Backend.Application.Features.SupportCategories.Commands.CreateSupportCategory;
 using HelpDesk.Backend.Application.Features.SupportCategories.Commands.SetSupportCategoryActive;
-using HelpDesk.Backend.Application.Features.SupportCategories.Commands.UpdateCategorySla;
+using HelpDesk.Backend.Application.Features.SupportCategories.Commands.UpdateSupportCategorySla;
 using HelpDesk.Backend.Application.Features.SupportCategories.Commands.UpdateSupportCategory;
-using HelpDesk.Backend.Application.Features.SupportCategories.Models;
+using HelpDesk.Backend.Application.DTOs.SupportCategories;
 using HelpDesk.Backend.Application.Features.SupportCategories.Queries.GetSupportCategories;
 using HelpDesk.Backend.Application.Features.SupportCategories.Queries.GetSupportCategoryById;
 using HelpDesk.Backend.Domain.Enums;
@@ -49,7 +49,7 @@ public sealed class SupportCategoriesController(ISender sender) : ApiControllerB
     [HttpPost]
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<ActionResult<Guid>> Create(
-        CreateSupportCategoryRequest request,
+        CreateSupportCategoryApiRequest request,
         CancellationToken cancellationToken)
     {
         var id = await sender.Send(
@@ -69,7 +69,7 @@ public sealed class SupportCategoriesController(ISender sender) : ApiControllerB
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> Update(
         Guid id,
-        UpdateSupportCategoryRequest request,
+        UpdateSupportCategoryApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
@@ -87,11 +87,11 @@ public sealed class SupportCategoriesController(ISender sender) : ApiControllerB
     public async Task<IActionResult> UpdateSla(
         Guid id,
         TicketPriority priority,
-        UpdateCategorySlaRequest request,
+        UpdateSupportCategorySlaApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(
-            new UpdateCategorySlaCommand(
+            new UpdateSupportCategorySlaCommand(
                 ActorUserId,
                 id,
                 priority,
@@ -104,7 +104,7 @@ public sealed class SupportCategoriesController(ISender sender) : ApiControllerB
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> SetActive(
         Guid id,
-        SetActiveRequest request,
+        SetSupportCategoryActiveApiRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(

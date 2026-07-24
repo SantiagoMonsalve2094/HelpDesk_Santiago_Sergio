@@ -1,7 +1,7 @@
-using HelpDesk.Backend.Domain.Categories;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
 using HelpDesk.Backend.Domain.Enums;
-using HelpDesk.Backend.Domain.Tickets;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.Tickets;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Domain.ValueObjects;
 
 namespace HelpDesk.Backend.Application.Tests.TestDoubles;
@@ -28,9 +28,9 @@ internal static class ApplicationTestData
             Now);
 
     internal static User User(string? email = null) =>
-        HelpDesk.Backend.Domain.Users.User.CreateUser(
-            "Usuario Normal",
-            email ?? $"user-{Guid.NewGuid():N}@example.com",
+        HelpDesk.Backend.Domain.Aggregates.Users.User.CreateUser(
+            "Santiago Monsalve",
+            email ?? $"santiago-{Guid.NewGuid():N}@helpdesk.test",
             "hash-user",
             Now);
 
@@ -38,26 +38,26 @@ internal static class ApplicationTestData
         IEnumerable<Guid> categoryIds,
         int capacity = 3,
         string? email = null) =>
-        HelpDesk.Backend.Domain.Users.User.CreateTechnician(
-            "Técnico Uno",
-            email ?? $"tech-{Guid.NewGuid():N}@example.com",
+        HelpDesk.Backend.Domain.Aggregates.Users.User.CreateTechnician(
+            "Juan Reyes",
+            email ?? $"juan-{Guid.NewGuid():N}@helpdesk.test",
             "hash-tech",
             categoryIds,
             capacity,
             Now);
 
     internal static User Supervisor(Guid categoryId) =>
-        HelpDesk.Backend.Domain.Users.User.CreateSupervisor(
-            "Supervisor Uno",
-            $"supervisor-{Guid.NewGuid():N}@example.com",
+        HelpDesk.Backend.Domain.Aggregates.Users.User.CreateSupervisor(
+            "Sergio Otalvaro",
+            $"sergio-{Guid.NewGuid():N}@helpdesk.test",
             "hash-supervisor",
             categoryId,
             Now);
 
     internal static User SuperAdmin() =>
-        HelpDesk.Backend.Domain.Users.User.CreateSuperAdmin(
-            "Administrador",
-            $"admin-{Guid.NewGuid():N}@example.com",
+        HelpDesk.Backend.Domain.Aggregates.Users.User.CreateSuperAdmin(
+            "Santiago Monsalve",
+            $"santiago.admin-{Guid.NewGuid():N}@helpdesk.test",
             "hash-admin",
             Now);
 
@@ -66,7 +66,7 @@ internal static class ApplicationTestData
         Guid categoryId,
         TicketPriority priority = TicketPriority.Critical,
         int sequence = 1) =>
-        HelpDesk.Backend.Domain.Tickets.Ticket.Create(
+        HelpDesk.Backend.Domain.Aggregates.Tickets.Ticket.Create(
             TicketNumber.Create(2026, sequence),
             "Equipo sin acceso a red",
             "El equipo no logra conectarse a la red corporativa.",

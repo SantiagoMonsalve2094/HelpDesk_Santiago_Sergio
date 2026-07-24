@@ -1,6 +1,6 @@
-using HelpDesk.Backend.Api.Contracts;
+using HelpDesk.Backend.Api.DTOs.Auth;
 using HelpDesk.Backend.Application.Features.Auth.Commands.Login;
-using HelpDesk.Backend.Application.Features.Auth.Models;
+using HelpDesk.Backend.Application.DTOs.Auth;
 using HelpDesk.Backend.Application.Features.Auth.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +17,7 @@ public sealed class AuthController(ISender sender) : ApiControllerBase
     [EnableRateLimiting("login")]
     [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
     public async Task<ActionResult<LoginResponse>> Login(
-        LoginRequest request,
+        LoginApiRequest request,
         CancellationToken cancellationToken)
     {
         var response = await sender.Send(

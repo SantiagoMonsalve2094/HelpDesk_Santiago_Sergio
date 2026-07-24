@@ -1,8 +1,8 @@
-using HelpDesk.Backend.Api.Authorization;
-using HelpDesk.Backend.Application.Common.Models;
-using HelpDesk.Backend.Application.Features.Tickets.Models;
-using HelpDesk.Backend.Application.Features.Tickets.Queries.GetSlaAlerts;
-using HelpDesk.Backend.Application.Features.Tickets.Queries.GetSlaReport;
+using HelpDesk.Backend.Api.Security;
+using HelpDesk.Backend.Application.DTOs.Common;
+using HelpDesk.Backend.Application.DTOs.Sla;
+using HelpDesk.Backend.Application.Features.Sla.Queries.GetSlaAlerts;
+using HelpDesk.Backend.Application.Features.Sla.Queries.GetSlaReport;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

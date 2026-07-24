@@ -1,13 +1,18 @@
-using HelpDesk.Backend.Application.Abstractions;
-using HelpDesk.Backend.Application.Abstractions.Persistence;
-using HelpDesk.Backend.Application.Abstractions.Queries;
-using HelpDesk.Backend.Application.Common.Models;
-using HelpDesk.Backend.Application.Features.SupportCategories.Models;
-using HelpDesk.Backend.Application.Features.Tickets.Models;
-using HelpDesk.Backend.Application.Features.Users.Models;
-using HelpDesk.Backend.Domain.Categories;
-using HelpDesk.Backend.Domain.Tickets;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Application.DTOs.Auth;
+using HelpDesk.Backend.Application.Interfaces;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Queries;
+using HelpDesk.Backend.Application.DTOs.Common;
+using HelpDesk.Backend.Application.DTOs.SupportCategories;
+using HelpDesk.Backend.Application.Features.SupportCategories;
+using HelpDesk.Backend.Application.DTOs.Sla;
+using HelpDesk.Backend.Application.DTOs.Tickets;
+using HelpDesk.Backend.Application.Features.Tickets;
+using HelpDesk.Backend.Application.DTOs.Users;
+using HelpDesk.Backend.Application.Features.Users;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
+using HelpDesk.Backend.Domain.Aggregates.Tickets;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 
 namespace HelpDesk.Backend.Application.Tests.TestDoubles;
 

@@ -2,7 +2,7 @@ using HelpDesk.Backend.Application.Features.Tickets.Commands.AddTicketComment;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.AssignTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.CloseResolvedTickets;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.CreateTicket;
-using HelpDesk.Backend.Application.Features.Tickets.Commands.EvaluatePendingSla;
+using HelpDesk.Backend.Application.Features.Sla.Commands.EvaluatePendingSla;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ForceTicketStatus;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ReassignTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ReopenTicket;
@@ -379,9 +379,9 @@ public sealed class TicketCommandTests
     }
 
     private static TestContext CreateResolvedTicketContext(
-        out HelpDesk.Backend.Domain.Users.User creator,
-        out HelpDesk.Backend.Domain.Users.User technician,
-        out HelpDesk.Backend.Domain.Tickets.Ticket ticket)
+        out HelpDesk.Backend.Domain.Aggregates.Users.User creator,
+        out HelpDesk.Backend.Domain.Aggregates.Users.User technician,
+        out HelpDesk.Backend.Domain.Aggregates.Tickets.Ticket ticket)
     {
         var context = new TestContext();
         var category = ApplicationTestData.Category();

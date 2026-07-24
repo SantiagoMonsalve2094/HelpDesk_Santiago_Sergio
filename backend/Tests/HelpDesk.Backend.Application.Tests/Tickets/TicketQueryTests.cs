@@ -1,7 +1,9 @@
-using HelpDesk.Backend.Application.Features.Tickets.Models;
+using HelpDesk.Backend.Application.DTOs.Sla;
+using HelpDesk.Backend.Application.DTOs.Tickets;
+using HelpDesk.Backend.Application.Features.Tickets;
 using HelpDesk.Backend.Application.Features.Tickets.Queries.GetAssignableTechnicians;
-using HelpDesk.Backend.Application.Features.Tickets.Queries.GetSlaAlerts;
-using HelpDesk.Backend.Application.Features.Tickets.Queries.GetSlaReport;
+using HelpDesk.Backend.Application.Features.Sla.Queries.GetSlaAlerts;
+using HelpDesk.Backend.Application.Features.Sla.Queries.GetSlaReport;
 using HelpDesk.Backend.Application.Features.Tickets.Queries.GetTicketById;
 using HelpDesk.Backend.Application.Features.Tickets.Queries.GetTickets;
 using HelpDesk.Backend.Application.Tests.TestDoubles;

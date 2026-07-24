@@ -1,4 +1,4 @@
-using HelpDesk.Backend.Application.Abstractions.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
 using HelpDesk.Backend.Infrastructure.Tests.TestSupport;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +13,7 @@ public sealed class TicketNumberSequenceTests
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Impresoras");
         var creator = InfrastructureTestData.CreateUser(
-            "Usuario Impresoras",
+            "Sergio Otalvaro",
             "impresoras@helpdesk.local");
         var existingTicket = InfrastructureTestData.CreateTicket(
             1,

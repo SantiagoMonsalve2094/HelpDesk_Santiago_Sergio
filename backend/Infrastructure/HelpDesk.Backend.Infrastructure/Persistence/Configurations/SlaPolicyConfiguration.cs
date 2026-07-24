@@ -1,4 +1,4 @@
-using HelpDesk.Backend.Domain.Categories;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

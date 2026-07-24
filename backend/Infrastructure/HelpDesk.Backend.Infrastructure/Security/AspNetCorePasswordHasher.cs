@@ -1,4 +1,4 @@
-using HelpDesk.Backend.Application.Abstractions;
+using HelpDesk.Backend.Application.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace HelpDesk.Backend.Infrastructure.Security;

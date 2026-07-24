@@ -1,5 +1,5 @@
 using System.Data;
-using HelpDesk.Backend.Application.Abstractions.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
 using HelpDesk.Backend.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;

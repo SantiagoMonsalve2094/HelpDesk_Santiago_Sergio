@@ -1,8 +1,8 @@
-using HelpDesk.Backend.Application.Abstractions;
-using HelpDesk.Backend.Application.Abstractions.Persistence;
-using HelpDesk.Backend.Application.Abstractions.Queries;
+using HelpDesk.Backend.Application.Interfaces;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Queries;
 using HelpDesk.Backend.Infrastructure.Persistence;
-using HelpDesk.Backend.Infrastructure.Persistence.Queries;
+using HelpDesk.Backend.Infrastructure.Persistence.Repositories;
 using HelpDesk.Backend.Infrastructure.Security;
 using HelpDesk.Backend.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;

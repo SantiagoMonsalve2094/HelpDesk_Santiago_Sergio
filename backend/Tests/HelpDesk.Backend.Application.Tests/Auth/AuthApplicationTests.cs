@@ -1,11 +1,12 @@
 using FluentAssertions;
-using HelpDesk.Backend.Application.Abstractions;
-using HelpDesk.Backend.Application.Abstractions.Persistence;
-using HelpDesk.Backend.Application.Common.Exceptions;
+using HelpDesk.Backend.Application.DTOs.Auth;
+using HelpDesk.Backend.Application.Interfaces;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
+using HelpDesk.Backend.Application.Exceptions;
 using HelpDesk.Backend.Application.Features.Auth.Commands.Login;
 using HelpDesk.Backend.Application.Features.Auth.Queries.GetCurrentUser;
 using HelpDesk.Backend.Application.Tests.TestDoubles;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using Moq;
 
 namespace HelpDesk.Backend.Application.Tests.Auth;

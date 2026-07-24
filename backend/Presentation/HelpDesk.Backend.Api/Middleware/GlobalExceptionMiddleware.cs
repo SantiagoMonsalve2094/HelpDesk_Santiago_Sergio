@@ -1,7 +1,8 @@
 using System.Text.Json;
 using FluentValidation;
 using HelpDesk.Backend.Api.Errors;
-using HelpDesk.Backend.Application.Common.Exceptions;
+using HelpDesk.Backend.Api.Resources;
+using HelpDesk.Backend.Application.Exceptions;
 using HelpDesk.Backend.Domain.Common;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -27,21 +28,7 @@ public sealed class GlobalExceptionMiddleware(
         catch (Exception exception)
         {
             var mapping = Map(exception);
-            if (mapping.Status >= StatusCodes.Status500InternalServerError)
-            {
-                logger.LogError(
-                    exception,
-                    "Unhandled request error. TraceId: {TraceId}",
-                    context.TraceIdentifier);
-            }
-            else
-            {
-                logger.LogWarning(
-                    "Request rejected with {Status}. TraceId: {TraceId}. Error: {Error}",
-                    mapping.Status,
-                    context.TraceIdentifier,
-                    exception.Message);
-            }
+            LogException(logger, context.TraceIdentifier, exception, mapping.Status);
 
             if (!context.Response.HasStarted)
             {
@@ -56,61 +43,86 @@ public sealed class GlobalExceptionMiddleware(
         }
     }
 
+    private static void LogException(
+        ILogger logger,
+        string traceId,
+        Exception exception,
+        int status)
+    {
+        if (status >= StatusCodes.Status500InternalServerError)
+        {
+            logger.LogError(
+                exception,
+                "Unhandled request error. TraceId: {TraceId}",
+                traceId);
+            return;
+        }
+
+        logger.LogWarning(
+            "Request rejected with {Status}. TraceId: {TraceId}. Error: {Error}",
+            status,
+            traceId,
+            exception.Message);
+    }
+
     private static ErrorMapping Map(Exception exception) =>
         exception switch
         {
             ValidationException validation => Validation(validation),
             InvalidCredentialsException => new(
                 StatusCodes.Status401Unauthorized,
-                "Credenciales inválidas",
+                ApiMessages.InvalidCredentialsTitle,
                 exception.Message),
             UnauthorizedAccessException => new(
                 StatusCodes.Status403Forbidden,
-                "Acceso denegado",
+                ApiMessages.AccessDeniedTitle,
                 exception.Message),
             KeyNotFoundException => new(
                 StatusCodes.Status404NotFound,
-                "Recurso no encontrado",
+                ApiMessages.ResourceNotFoundTitle,
                 exception.Message),
             DomainException domain => new(
                 StatusCodes.Status409Conflict,
-                "Conflicto de dominio",
+                ApiMessages.DomainConflictTitle,
                 domain.Message,
                 [new ApiErrorDetail(domain.Code, domain.Message, null)]),
             DbUpdateConcurrencyException => new(
                 StatusCodes.Status409Conflict,
-                "Conflicto de concurrencia",
-                "El recurso fue modificado por otra operación. Actualice la información e inténtelo de nuevo."),
+                ApiMessages.ConcurrencyConflictTitle,
+                ApiMessages.ConcurrencyConflict),
             DbUpdateException database when IsUniqueConstraint(database) => new(
                 StatusCodes.Status409Conflict,
-                "Conflicto de unicidad",
-                "Ya existe un registro con los datos únicos indicados."),
+                ApiMessages.UniquenessConflictTitle,
+                ApiMessages.UniquenessConflict),
             InvalidOperationException => new(
                 StatusCodes.Status409Conflict,
-                "Conflicto",
+                ApiMessages.ConflictTitle,
                 exception.Message),
             BadHttpRequestException or JsonException or ArgumentException => new(
                 StatusCodes.Status400BadRequest,
-                "Solicitud inválida",
-                "La solicitud contiene datos inválidos."),
+                ApiMessages.InvalidRequestTitle,
+                ApiMessages.InvalidRequest),
             _ => new(
                 StatusCodes.Status500InternalServerError,
-                "Error interno",
-                "Ocurrió un error inesperado.")
+                ApiMessages.UnexpectedErrorTitle,
+                ApiMessages.UnexpectedError)
         };
 
     private static ErrorMapping Validation(ValidationException exception)
     {
         var errors = exception.Errors
             .Select(error => new ApiErrorDetail(
-                string.IsNullOrWhiteSpace(error.ErrorCode) ? "VALIDATION" : error.ErrorCode,
+                string.IsNullOrWhiteSpace(error.ErrorCode)
+                    ? ApiErrorCodes.Validation
+                    : error.ErrorCode,
                 error.ErrorMessage,
                 ToCamelCase(error.PropertyName)))
             .ToArray();
+
         return new ErrorMapping(
             StatusCodes.Status422UnprocessableEntity,
-            "Error de validación",
-            "Uno o más campos son inválidos.",
+            ApiMessages.ValidationTitle,
+            ApiMessages.Validation,
             errors);
     }
 

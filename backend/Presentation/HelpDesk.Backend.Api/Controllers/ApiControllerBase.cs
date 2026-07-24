@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using HelpDesk.Backend.Api.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +18,7 @@ public abstract class ApiControllerBase : ControllerBase
                 User.FindFirstValue("sub");
             return Guid.TryParse(value, out var userId)
                 ? userId
-                : throw new UnauthorizedAccessException(
-                    "El token no contiene un identificador de usuario válido.");
+                : throw new UnauthorizedAccessException(ApiMessages.ActorClaimRequired);
         }
     }
 }

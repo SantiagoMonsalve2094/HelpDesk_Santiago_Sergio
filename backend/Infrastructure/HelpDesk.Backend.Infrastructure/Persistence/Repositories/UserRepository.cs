@@ -1,5 +1,5 @@
-using HelpDesk.Backend.Application.Abstractions.Persistence;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 

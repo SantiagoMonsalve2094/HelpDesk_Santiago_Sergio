@@ -25,7 +25,7 @@ public sealed class AuthAndSecurityTests : ApiIntegrationTestBase
         Assert.True(Guid.TryParse(payload.GetProperty("nameid").GetString(), out _));
         Assert.Contains(jwt.Claims, claim =>
             claim.Type == JwtRegisteredClaimNames.Name &&
-            claim.Value == "Administrador de pruebas");
+            claim.Value == "Santiago Monsalve");
         Assert.Equal(
             HelpDeskApiFactory.AdminEmail,
             payload.GetProperty(JwtRegisteredClaimNames.Email).GetString());

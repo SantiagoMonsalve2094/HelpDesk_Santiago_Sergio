@@ -1,5 +1,5 @@
-using HelpDesk.Backend.Application.Abstractions;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Application.Interfaces;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

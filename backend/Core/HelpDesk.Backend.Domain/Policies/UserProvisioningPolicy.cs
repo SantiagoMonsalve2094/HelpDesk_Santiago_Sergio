@@ -1,6 +1,6 @@
 using HelpDesk.Backend.Domain.Common;
 using HelpDesk.Backend.Domain.Enums;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 
 namespace HelpDesk.Backend.Domain.Policies;
 

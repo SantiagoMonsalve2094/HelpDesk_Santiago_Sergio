@@ -1,7 +1,7 @@
-using HelpDesk.Backend.Domain.Categories;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
 using HelpDesk.Backend.Domain.Enums;
-using HelpDesk.Backend.Domain.Tickets;
-using HelpDesk.Backend.Domain.Users;
+using HelpDesk.Backend.Domain.Aggregates.Tickets;
+using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Domain.ValueObjects;
 
 namespace HelpDesk.Backend.Domain.Tests;
@@ -26,12 +26,16 @@ internal static class TestData
     }
 
     public static User NormalUser(Guid? ignored = null) =>
-        User.CreateUser("Usuario Normal", "user@example.com", "hash-user", Now);
+        User.CreateUser(
+            "Santiago Monsalve",
+            "santiago.monsalve@helpdesk.test",
+            "hash-user",
+            Now);
 
     public static User Technician(IEnumerable<Guid> categoryIds, int capacity = 3) =>
         User.CreateTechnician(
-            "Técnico Uno",
-            $"tech-{Guid.NewGuid():N}@example.com",
+            "Juan Reyes",
+            $"juan.reyes-{Guid.NewGuid():N}@helpdesk.test",
             "hash-tech",
             categoryIds,
             capacity,
@@ -39,16 +43,16 @@ internal static class TestData
 
     public static User Supervisor(Guid categoryId) =>
         User.CreateSupervisor(
-            "Supervisor Uno",
-            $"supervisor-{Guid.NewGuid():N}@example.com",
+            "Sergio Otalvaro",
+            $"sergio.otalvaro-{Guid.NewGuid():N}@helpdesk.test",
             "hash-supervisor",
             categoryId,
             Now);
 
     public static User SuperAdmin() =>
         User.CreateSuperAdmin(
-            "Administrador",
-            $"admin-{Guid.NewGuid():N}@example.com",
+            "Santiago Monsalve",
+            $"santiago.admin-{Guid.NewGuid():N}@helpdesk.test",
             "hash-admin",
             Now);
 
@@ -56,7 +60,7 @@ internal static class TestData
         Guid creatorUserId,
         Guid categoryId,
         TimeSpan? slaDuration = null) =>
-        HelpDesk.Backend.Domain.Tickets.Ticket.Create(
+        HelpDesk.Backend.Domain.Aggregates.Tickets.Ticket.Create(
             TicketNumber.Create(2026, 1),
             "Equipo sin acceso a red",
             "El equipo no logra conectarse a la red corporativa.",

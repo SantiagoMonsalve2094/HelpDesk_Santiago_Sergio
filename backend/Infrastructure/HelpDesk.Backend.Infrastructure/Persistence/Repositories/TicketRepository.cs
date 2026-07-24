@@ -1,6 +1,6 @@
-using HelpDesk.Backend.Application.Abstractions.Persistence;
+using HelpDesk.Backend.Application.Interfaces.Persistence;
 using HelpDesk.Backend.Domain.Enums;
-using HelpDesk.Backend.Domain.Tickets;
+using HelpDesk.Backend.Domain.Aggregates.Tickets;
 using Microsoft.EntityFrameworkCore;
 
 namespace HelpDesk.Backend.Infrastructure.Persistence.Repositories;

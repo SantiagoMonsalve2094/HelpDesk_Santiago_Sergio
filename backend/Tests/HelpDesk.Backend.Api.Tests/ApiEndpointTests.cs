@@ -6,7 +6,9 @@ using System.Text.Json;
 using HelpDesk.Backend.Api.Controllers;
 using HelpDesk.Backend.Api.Middleware;
 using HelpDesk.Backend.Api.Tests.TestSupport;
-using HelpDesk.Backend.Application.Features.Tickets.Models;
+using HelpDesk.Backend.Application.DTOs.Sla;
+using HelpDesk.Backend.Application.DTOs.Tickets;
+using HelpDesk.Backend.Application.Features.Tickets;
 using HelpDesk.Backend.Domain.Enums;
 using HelpDesk.Backend.Infrastructure.Persistence;
 using MediatR;
@@ -51,7 +53,7 @@ public sealed class ApiEndpointTests : ApiIntegrationTestBase
         var adminToken = await Client.LoginAsync();
         Client.UseBearer(adminToken);
         var categoryId = await Client.CreateCategoryAsync();
-        const string email = "ticket-creator@helpdesk.test";
+        const string email = "santiago.creador@helpdesk.test";
         const string password = "Ticket creator password";
         await Client.CreateUserAsync(email, password, UserRole.User);
 
