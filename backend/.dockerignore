@@ -1,8 +1,8 @@
 **/bin/
 **/obj/
 **/.vs/
-*.user
-*.suo
+Tests/
 TestResults/
 coverage/
-.env
+*.user
+*.suo
