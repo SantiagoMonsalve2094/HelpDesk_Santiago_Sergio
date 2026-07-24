@@ -1,4 +1,4 @@
-using HelpDesk.Backend.Domain.Categories;
+using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
 using HelpDesk.Backend.Domain.Common;
 using HelpDesk.Backend.Domain.Enums;
 
