@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{FE5CF517-28D0-4D49-AC4B-E6C129715041}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Domain", "Core\HelpDesk.Backend.Domain\HelpDesk.Backend.Domain.csproj", "{44243FC2-3468-46F7-A6C5-224AB39C81ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{496AE02B-AC4E-49F4-B8E6-47B208440233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Domain.Tests", "Tests\HelpDesk.Backend.Domain.Tests\HelpDesk.Backend.Domain.Tests.csproj", "{9008966A-A7EA-429A-B23C-6D5EDC1B02E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Application", "Core\HelpDesk.Backend.Application\HelpDesk.Backend.Application.csproj", "{52CD19F1-B5DD-43A5-B00F-209B812E2578}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Application.Tests", "Tests\HelpDesk.Backend.Application.Tests\HelpDesk.Backend.Application.Tests.csproj", "{66E1F668-7ABA-4885-8F80-D318A3D1A71F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{B461A0FF-B16A-48AA-AFB8-69D0FE983CD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Infrastructure", "Infrastructure\HelpDesk.Backend.Infrastructure\HelpDesk.Backend.Infrastructure.csproj", "{2D292FC0-F746-45DC-ADA4-698D89F4EB80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Infrastructure.Tests", "Tests\HelpDesk.Backend.Infrastructure.Tests\HelpDesk.Backend.Infrastructure.Tests.csproj", "{BD73B3BB-570C-43E5-84BA-48418CD99D21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{A3627CEF-B96C-442E-A27A-D74E00B65527}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Api", "Presentation\HelpDesk.Backend.Api\HelpDesk.Backend.Api.csproj", "{4191E1C4-21F1-4CB4-8257-C48888C1FEBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpDesk.Backend.Api.Tests", "Tests\HelpDesk.Backend.Api.Tests\HelpDesk.Backend.Api.Tests.csproj", "{97D8ADA0-FFA1-43A7-A473-5B2217FEFC3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44243FC2-3468-46F7-A6C5-224AB39C81ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44243FC2-3468-46F7-A6C5-224AB39C81ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44243FC2-3468-46F7-A6C5-224AB39C81ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44243FC2-3468-46F7-A6C5-224AB39C81ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9008966A-A7EA-429A-B23C-6D5EDC1B02E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9008966A-A7EA-429A-B23C-6D5EDC1B02E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9008966A-A7EA-429A-B23C-6D5EDC1B02E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9008966A-A7EA-429A-B23C-6D5EDC1B02E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52CD19F1-B5DD-43A5-B00F-209B812E2578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52CD19F1-B5DD-43A5-B00F-209B812E2578}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52CD19F1-B5DD-43A5-B00F-209B812E2578}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52CD19F1-B5DD-43A5-B00F-209B812E2578}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E1F668-7ABA-4885-8F80-D318A3D1A71F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E1F668-7ABA-4885-8F80-D318A3D1A71F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E1F668-7ABA-4885-8F80-D318A3D1A71F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E1F668-7ABA-4885-8F80-D318A3D1A71F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D292FC0-F746-45DC-ADA4-698D89F4EB80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D292FC0-F746-45DC-ADA4-698D89F4EB80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D292FC0-F746-45DC-ADA4-698D89F4EB80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D292FC0-F746-45DC-ADA4-698D89F4EB80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD73B3BB-570C-43E5-84BA-48418CD99D21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD73B3BB-570C-43E5-84BA-48418CD99D21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD73B3BB-570C-43E5-84BA-48418CD99D21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD73B3BB-570C-43E5-84BA-48418CD99D21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4191E1C4-21F1-4CB4-8257-C48888C1FEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4191E1C4-21F1-4CB4-8257-C48888C1FEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4191E1C4-21F1-4CB4-8257-C48888C1FEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4191E1C4-21F1-4CB4-8257-C48888C1FEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D8ADA0-FFA1-43A7-A473-5B2217FEFC3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D8ADA0-FFA1-43A7-A473-5B2217FEFC3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D8ADA0-FFA1-43A7-A473-5B2217FEFC3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D8ADA0-FFA1-43A7-A473-5B2217FEFC3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{44243FC2-3468-46F7-A6C5-224AB39C81ED} = {FE5CF517-28D0-4D49-AC4B-E6C129715041}
+		{9008966A-A7EA-429A-B23C-6D5EDC1B02E1} = {496AE02B-AC4E-49F4-B8E6-47B208440233}
+		{52CD19F1-B5DD-43A5-B00F-209B812E2578} = {FE5CF517-28D0-4D49-AC4B-E6C129715041}
+		{66E1F668-7ABA-4885-8F80-D318A3D1A71F} = {496AE02B-AC4E-49F4-B8E6-47B208440233}
+		{2D292FC0-F746-45DC-ADA4-698D89F4EB80} = {B461A0FF-B16A-48AA-AFB8-69D0FE983CD6}
+		{BD73B3BB-570C-43E5-84BA-48418CD99D21} = {496AE02B-AC4E-49F4-B8E6-47B208440233}
+		{4191E1C4-21F1-4CB4-8257-C48888C1FEBF} = {A3627CEF-B96C-442E-A27A-D74E00B65527}
+		{97D8ADA0-FFA1-43A7-A473-5B2217FEFC3D} = {496AE02B-AC4E-49F4-B8E6-47B208440233}
+	EndGlobalSection
+EndGlobal

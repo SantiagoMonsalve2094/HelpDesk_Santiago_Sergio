@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/.vs/
+*.user
+*.suo
+TestResults/
+coverage/
+.env
+**/node_modules/
+frontend/dist/
+frontend/*.log
