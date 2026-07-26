@@ -6,7 +6,8 @@ namespace HelpDesk.Backend.Domain.Policies;
 
 public static class TicketAccessPolicy
 {
-    public static bool CanCreateTicket(User actor) => actor.IsActive;
+    public static bool CanCreateTicket(User actor) =>
+        actor.IsActive && actor.Role != UserRole.Technician;
 
     public static bool CanView(User actor, Ticket ticket)
     {
@@ -18,17 +19,17 @@ public static class TicketAccessPolicy
             return false;
         }
 
-        if (actor.Role == UserRole.SuperAdmin || actor.Id == ticket.CreatorUserId)
+        if (actor.Role == UserRole.SuperAdmin || actor.Role == UserRole.Supervisor)
         {
             return true;
         }
 
-        if (actor.Role == UserRole.Supervisor)
+        return actor.Role switch
         {
-            return actor.SupervisorProfile?.SupportCategoryId == ticket.SupportCategoryId;
-        }
-
-        return actor.Role == UserRole.Technician && ticket.CurrentTechnicianUserId == actor.Id;
+            UserRole.User => actor.Id == ticket.CreatorUserId,
+            UserRole.Technician => ticket.CurrentTechnicianUserId == actor.Id,
+            _ => false
+        };
     }
 
     public static bool CanComment(User actor, Ticket ticket) => CanView(actor, ticket);
@@ -52,13 +53,6 @@ public static class TicketAccessPolicy
         if (!actor.IsActive)
         {
             return false;
-        }
-
-        if (actor.Role == UserRole.SuperAdmin ||
-            actor.Role == UserRole.Supervisor &&
-            actor.SupervisorProfile?.SupportCategoryId == ticket.SupportCategoryId)
-        {
-            return true;
         }
 
         return actor.Role == UserRole.Technician && ticket.CurrentTechnicianUserId == actor.Id;

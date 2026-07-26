@@ -27,6 +27,20 @@ public sealed class GetTicketByIdHandler(
             request.TicketId,
             cancellationToken);
         TicketApplicationAccess.EnsureCanView(actor, ticket);
-        return TicketMapper.ToDetails(ticket);
+        var authorIds = ticket.Comments
+            .Select(comment => comment.AuthorUserId)
+            .Distinct()
+            .ToArray();
+        var authorNames = new Dictionary<Guid, string>(authorIds.Length);
+        foreach (var authorId in authorIds)
+        {
+            var author = await unitOfWork.Users.GetByIdAsync(authorId, cancellationToken);
+            if (author is not null)
+            {
+                authorNames[authorId] = author.FullName;
+            }
+        }
+
+        return TicketMapper.ToDetails(ticket, authorNames);
     }
 }

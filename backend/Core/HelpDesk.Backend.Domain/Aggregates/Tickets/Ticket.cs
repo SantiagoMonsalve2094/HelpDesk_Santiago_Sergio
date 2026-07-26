@@ -191,6 +191,7 @@ public sealed class Ticket : AggregateRoot
         }
 
         var technicianUserId = EnsureCurrentTechnician();
+        EnsureAssignedTechnician(changedByUserId, technicianUserId);
         RecordSlaResponse(technicianUserId, now);
         ChangeStatus(TicketStatus.InProgress, changedByUserId, null, false, now);
     }
@@ -204,6 +205,7 @@ public sealed class Ticket : AggregateRoot
         }
 
         var technicianUserId = EnsureCurrentTechnician();
+        EnsureAssignedTechnician(changedByUserId, technicianUserId);
         RecordSlaResponse(technicianUserId, now);
         AddComment(
             changedByUserId,
@@ -415,7 +417,9 @@ public sealed class Ticket : AggregateRoot
             throw new DomainException("TICKET_CANNOT_BE_CLOSED", "Solo un ticket resuelto puede cerrarse por el flujo normal.");
         }
 
-        if (!_comments.Any(comment => comment.SatisfiesResolutionRequirement))
+        if (!_comments.Any(comment =>
+                comment.SatisfiesResolutionRequirement &&
+                comment.AuthorUserId == CurrentTechnicianUserId))
         {
             throw new DomainException("RESOLUTION_COMMENT_REQUIRED", "El ticket requiere evidencia de resolución antes de cerrarse.");
         }
@@ -525,6 +529,18 @@ public sealed class Ticket : AggregateRoot
 
     private Guid EnsureCurrentTechnician() =>
         CurrentTechnicianUserId ?? throw new DomainException("TECHNICIAN_REQUIRED", "El estado solicitado requiere un técnico asignado.");
+
+    private static void EnsureAssignedTechnician(
+        Guid changedByUserId,
+        Guid technicianUserId)
+    {
+        if (changedByUserId != technicianUserId)
+        {
+            throw new DomainException(
+                "ONLY_ASSIGNED_TECHNICIAN",
+                "Solo el técnico asignado puede iniciar o resolver el ticket.");
+        }
+    }
 
     private void EndCurrentAssignment(DateTimeOffset now)
     {

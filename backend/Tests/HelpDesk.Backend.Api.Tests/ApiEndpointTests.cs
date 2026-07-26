@@ -237,7 +237,6 @@ public sealed class ApiEndpointTests : ApiIntegrationTestBase
             "/api/tickets",
             "/api/tickets/{id}/assign",
             "/api/tickets/{id}/reassign",
-            "/api/tickets/{id}/force-status",
             "/api/sla/alerts",
             "/api/sla/report"
         };

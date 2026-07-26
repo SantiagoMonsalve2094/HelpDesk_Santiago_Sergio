@@ -6,7 +6,6 @@ using HelpDesk.Backend.Application.Features.Tickets.Commands.AssignTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.CloseTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.CreateTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.DeleteTicket;
-using HelpDesk.Backend.Application.Features.Tickets.Commands.ForceTicketStatus;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ReassignTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ReopenTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ResolveTicket;
@@ -200,23 +199,6 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
     {
         await sender.Send(
             new ReopenTicketCommand(ActorUserId, id),
-            cancellationToken);
-        return NoContent();
-    }
-
-    [HttpPost("{id:guid}/force-status")]
-    [Authorize(Roles = RoleNames.SupervisorOrSuperAdmin)]
-    public async Task<IActionResult> ForceStatus(
-        Guid id,
-        ForceTicketStatusApiRequest request,
-        CancellationToken cancellationToken)
-    {
-        await sender.Send(
-            new ForceTicketStatusCommand(
-                ActorUserId,
-                id,
-                request.TargetStatus,
-                request.Justification),
             cancellationToken);
         return NoContent();
     }

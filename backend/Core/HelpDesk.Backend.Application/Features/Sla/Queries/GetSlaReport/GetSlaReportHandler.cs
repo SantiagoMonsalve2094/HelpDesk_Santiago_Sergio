@@ -36,13 +36,7 @@ public sealed class GetSlaReportHandler(
                  actor.Role == UserRole.Supervisor &&
                  actor.SupervisorProfile is not null)
         {
-            categoryId = actor.SupervisorProfile.SupportCategoryId;
-            if (request.SupportCategoryId is Guid requestedCategoryId &&
-                requestedCategoryId != categoryId)
-            {
-                throw new UnauthorizedAccessException(
-                    ApplicationMessages.SupervisorCanOnlyViewOwnCategoryReport);
-            }
+            categoryId = request.SupportCategoryId;
         }
         else
         {

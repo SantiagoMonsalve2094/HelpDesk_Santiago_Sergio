@@ -169,16 +169,16 @@ public sealed class ReadRepositoryTests
 
         Assert.Equal(new[] { firstTicket.Id }, userResult.Items.Select(item => item.Id));
         Assert.Equal(
-            new[] { firstTicket.Id, technicianTicket.Id }.Order(),
-            technicianResult.Items.Select(item => item.Id).Order());
-        Assert.Equal(
             new[] { firstTicket.Id },
-            supervisorResult.Items.Select(item => item.Id));
+            technicianResult.Items.Select(item => item.Id));
+        Assert.Equal(
+            new[] { firstTicket.Id, secondTicket.Id, technicianTicket.Id }.Order(),
+            supervisorResult.Items.Select(item => item.Id).Order());
         Assert.Equal(3, adminResult.TotalCount);
     }
 
     [Fact]
-    public async Task AssignableTechnicians_ExcludesFullTechnicians()
+    public async Task AssignableTechnicians_IncludesFullTechniciansWithZeroCapacity()
     {
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Telefonía");
@@ -219,9 +219,13 @@ public sealed class ReadRepositoryTests
         var technicians =
             await readRepository.GetAssignableTechniciansAsync(category.Id, default);
 
-        var technician = Assert.Single(technicians);
-        Assert.Equal(availableTechnician.Id, technician.TechnicianUserId);
-        Assert.Equal(2, technician.AvailableCapacity);
+        Assert.Equal(2, technicians.Count);
+        Assert.Contains(technicians, technician =>
+            technician.TechnicianUserId == availableTechnician.Id &&
+            technician.AvailableCapacity == 2);
+        Assert.Contains(technicians, technician =>
+            technician.TechnicianUserId == busyTechnician.Id &&
+            technician.AvailableCapacity == 0);
     }
 
     [Fact]
