@@ -27,7 +27,6 @@ public sealed class GetTicketByIdHandler(
             request.TicketId,
             cancellationToken);
         TicketApplicationAccess.EnsureCanView(actor, ticket);
-<<<<<<< HEAD
         var authorIds = ticket.Comments
             .Select(comment => comment.AuthorUserId)
             .Distinct()
@@ -43,8 +42,5 @@ public sealed class GetTicketByIdHandler(
         }
 
         return TicketMapper.ToDetails(ticket, authorNames);
-=======
-        return TicketMapper.ToDetails(ticket);
->>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     }
 }

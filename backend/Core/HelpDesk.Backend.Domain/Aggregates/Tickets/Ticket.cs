@@ -191,10 +191,7 @@ public sealed class Ticket : AggregateRoot
         }
 
         var technicianUserId = EnsureCurrentTechnician();
-<<<<<<< HEAD
         EnsureAssignedTechnician(changedByUserId, technicianUserId);
-=======
->>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
         RecordSlaResponse(technicianUserId, now);
         ChangeStatus(TicketStatus.InProgress, changedByUserId, null, false, now);
     }
@@ -208,10 +205,7 @@ public sealed class Ticket : AggregateRoot
         }
 
         var technicianUserId = EnsureCurrentTechnician();
-<<<<<<< HEAD
         EnsureAssignedTechnician(changedByUserId, technicianUserId);
-=======
->>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
         RecordSlaResponse(technicianUserId, now);
         AddComment(
             changedByUserId,
@@ -423,13 +417,9 @@ public sealed class Ticket : AggregateRoot
             throw new DomainException("TICKET_CANNOT_BE_CLOSED", "Solo un ticket resuelto puede cerrarse por el flujo normal.");
         }
 
-<<<<<<< HEAD
         if (!_comments.Any(comment =>
                 comment.SatisfiesResolutionRequirement &&
                 comment.AuthorUserId == CurrentTechnicianUserId))
-=======
-        if (!_comments.Any(comment => comment.SatisfiesResolutionRequirement))
->>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
         {
             throw new DomainException("RESOLUTION_COMMENT_REQUIRED", "El ticket requiere evidencia de resolución antes de cerrarse.");
         }
@@ -540,7 +530,6 @@ public sealed class Ticket : AggregateRoot
     private Guid EnsureCurrentTechnician() =>
         CurrentTechnicianUserId ?? throw new DomainException("TECHNICIAN_REQUIRED", "El estado solicitado requiere un técnico asignado.");
 
-<<<<<<< HEAD
     private static void EnsureAssignedTechnician(
         Guid changedByUserId,
         Guid technicianUserId)
@@ -553,8 +542,6 @@ public sealed class Ticket : AggregateRoot
         }
     }
 
-=======
->>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     private void EndCurrentAssignment(DateTimeOffset now)
     {
         var current = _assignments.LastOrDefault(assignment => assignment.IsCurrent)
