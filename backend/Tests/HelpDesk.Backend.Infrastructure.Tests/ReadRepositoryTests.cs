@@ -169,16 +169,28 @@ public sealed class ReadRepositoryTests
 
         Assert.Equal(new[] { firstTicket.Id }, userResult.Items.Select(item => item.Id));
         Assert.Equal(
+<<<<<<< HEAD
             new[] { firstTicket.Id },
             technicianResult.Items.Select(item => item.Id));
         Assert.Equal(
             new[] { firstTicket.Id, secondTicket.Id, technicianTicket.Id }.Order(),
             supervisorResult.Items.Select(item => item.Id).Order());
+=======
+            new[] { firstTicket.Id, technicianTicket.Id }.Order(),
+            technicianResult.Items.Select(item => item.Id).Order());
+        Assert.Equal(
+            new[] { firstTicket.Id },
+            supervisorResult.Items.Select(item => item.Id));
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
         Assert.Equal(3, adminResult.TotalCount);
     }
 
     [Fact]
+<<<<<<< HEAD
     public async Task AssignableTechnicians_IncludesFullTechniciansWithZeroCapacity()
+=======
+    public async Task AssignableTechnicians_ExcludesFullTechnicians()
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     {
         await using var database = await InfrastructureTestDatabase.CreateAsync();
         var category = InfrastructureTestData.CreateCategory("Telefonía");
@@ -219,6 +231,7 @@ public sealed class ReadRepositoryTests
         var technicians =
             await readRepository.GetAssignableTechniciansAsync(category.Id, default);
 
+<<<<<<< HEAD
         Assert.Equal(2, technicians.Count);
         Assert.Contains(technicians, technician =>
             technician.TechnicianUserId == availableTechnician.Id &&
@@ -226,6 +239,11 @@ public sealed class ReadRepositoryTests
         Assert.Contains(technicians, technician =>
             technician.TechnicianUserId == busyTechnician.Id &&
             technician.AvailableCapacity == 0);
+=======
+        var technician = Assert.Single(technicians);
+        Assert.Equal(availableTechnician.Id, technician.TechnicianUserId);
+        Assert.Equal(2, technician.AvailableCapacity);
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     }
 
     [Fact]

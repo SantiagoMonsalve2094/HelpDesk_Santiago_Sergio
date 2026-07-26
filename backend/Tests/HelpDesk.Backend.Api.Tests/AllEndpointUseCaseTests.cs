@@ -234,10 +234,41 @@ public sealed class AllEndpointUseCaseTests : ApiIntegrationTestBase
             HttpStatusCode.NoContent,
             (await Client.DeleteAsync($"/api/tickets/{removable.TicketId}")).StatusCode);
 
+<<<<<<< HEAD
         Client.UseBearer(adminToken);
         Assert.Equal(
             HttpStatusCode.OK,
             (await Client.GetAsync("/api/tickets?pageSize=100")).StatusCode);
+=======
+        var administrative = await Client.CreateTicketAsync(
+            categoryId,
+            "Falla intermitente de impresora",
+            "La impresora de recepción deja de responder.",
+            "medium");
+        Client.UseBearer(adminToken);
+        Assert.Equal(
+            HttpStatusCode.NoContent,
+            (await Client.PostAsJsonAsync(
+                $"/api/tickets/{administrative.TicketId}/assign",
+                new { technicianUserId = juanId })).StatusCode);
+        Assert.Equal(
+            HttpStatusCode.NoContent,
+            (await Client.PostAsJsonAsync(
+                $"/api/tickets/{administrative.TicketId}/force-status",
+                new
+                {
+                    targetStatus = "resolved",
+                    justification =
+                        "El supervisor verificó la impresora y confirmó que el servicio quedó estable."
+                })).StatusCode);
+
+        Assert.Equal(
+            HttpStatusCode.OK,
+            (await Client.GetAsync("/api/tickets?pageSize=100")).StatusCode);
+        Assert.Equal(
+            HttpStatusCode.OK,
+            (await Client.GetAsync($"/api/tickets/{administrative.TicketId}")).StatusCode);
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     }
 
     [Fact]

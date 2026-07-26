@@ -8,7 +8,10 @@ using HelpDesk.Backend.Api.Errors;
 using HelpDesk.Backend.Api.Middleware;
 using HelpDesk.Backend.Api.ModelBinding;
 using HelpDesk.Backend.Api.Resources;
+<<<<<<< HEAD
 using HelpDesk.Backend.Api.Services;
+=======
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
 using HelpDesk.Backend.Application;
 using HelpDesk.Backend.Infrastructure;
 using HelpDesk.Backend.Infrastructure.Persistence;
@@ -23,7 +26,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+<<<<<<< HEAD
 builder.Services.AddHostedService<SlaMaintenanceHostedService>();
+=======
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
 
 builder.Services
     .AddControllers(options =>

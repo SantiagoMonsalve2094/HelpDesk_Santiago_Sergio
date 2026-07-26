@@ -1,7 +1,11 @@
 using HelpDesk.Backend.Application.Interfaces;
+<<<<<<< HEAD
 using HelpDesk.Backend.Domain.Aggregates.SupportCategories;
 using HelpDesk.Backend.Domain.Aggregates.Users;
 using HelpDesk.Backend.Domain.Enums;
+=======
+using HelpDesk.Backend.Domain.Aggregates.Users;
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -22,6 +26,7 @@ public sealed class DatabaseInitializer(
             await dbContext.Database.MigrateAsync(cancellationToken);
         }
 
+<<<<<<< HEAD
         if (!await dbContext.Users.AnyAsync(cancellationToken))
         {
             var fullName = configuration["BootstrapAdmin:FullName"];
@@ -78,6 +83,31 @@ public sealed class DatabaseInitializer(
                 cancellationToken);
         }
 
+=======
+        if (await dbContext.Users.AnyAsync(cancellationToken))
+        {
+            return;
+        }
+
+        var fullName = configuration["BootstrapAdmin:FullName"];
+        var email = configuration["BootstrapAdmin:Email"];
+        var password = configuration["BootstrapAdmin:Password"];
+        if (string.IsNullOrWhiteSpace(fullName) ||
+            string.IsNullOrWhiteSpace(email) ||
+            string.IsNullOrWhiteSpace(password))
+        {
+            throw new InvalidOperationException(
+                "La base de datos no contiene usuarios. Configure BootstrapAdmin__FullName, " +
+                "BootstrapAdmin__Email y BootstrapAdmin__Password para crear el primer SuperAdmin.");
+        }
+
+        var administrator = User.CreateSuperAdmin(
+            fullName,
+            email,
+            passwordHasher.Hash(password),
+            clock.UtcNow);
+        await dbContext.Users.AddAsync(administrator, cancellationToken);
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

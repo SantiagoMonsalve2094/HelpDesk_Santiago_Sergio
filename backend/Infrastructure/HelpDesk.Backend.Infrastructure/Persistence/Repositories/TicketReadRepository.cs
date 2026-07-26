@@ -137,6 +137,10 @@ internal sealed class TicketReadRepository(HelpDeskDbContext dbContext)
             .ToListAsync(cancellationToken);
 
         return rows
+<<<<<<< HEAD
+=======
+            .Where(row => row.ActiveTicketCount < row.MaxActiveTickets)
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
             .OrderBy(row => row.ActiveTicketCount)
             .ThenBy(row => row.FullName)
             .Select(row => new AssignableTechnicianResponse(
@@ -237,8 +241,16 @@ internal sealed class TicketReadRepository(HelpDeskDbContext dbContext)
         return visibility.ActorRole switch
         {
             UserRole.SuperAdmin => query,
+<<<<<<< HEAD
             UserRole.Supervisor => query,
             UserRole.Technician => query.Where(ticket =>
+=======
+            UserRole.Supervisor when
+                visibility.SupervisorSupportCategoryId is Guid categoryId =>
+                query.Where(ticket => ticket.SupportCategoryId == categoryId),
+            UserRole.Technician => query.Where(ticket =>
+                ticket.CreatorUserId == visibility.ActorUserId ||
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
                 ticket.CurrentTechnicianUserId == visibility.ActorUserId),
             UserRole.User => query.Where(
                 ticket => ticket.CreatorUserId == visibility.ActorUserId),

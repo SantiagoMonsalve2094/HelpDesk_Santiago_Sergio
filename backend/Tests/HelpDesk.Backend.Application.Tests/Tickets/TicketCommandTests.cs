@@ -188,7 +188,11 @@ public sealed class TicketCommandTests
     }
 
     [Fact]
+<<<<<<< HEAD
     public async Task ResolveTicket_BySupervisor_IsForbidden()
+=======
+    public async Task ResolveTicket_ByCategorySupervisor_AddsResolutionComment()
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     {
         var context = new TestContext();
         var category = ApplicationTestData.Category();
@@ -207,10 +211,21 @@ public sealed class TicketCommandTests
             context.Clock,
             new ResolveTicketValidator());
 
+<<<<<<< HEAD
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
             handler.Handle(
                 new ResolveTicketCommand(supervisor.Id, ticket.Id, "Servicio restaurado."),
                 CancellationToken.None));
+=======
+        await handler.Handle(
+            new ResolveTicketCommand(supervisor.Id, ticket.Id, "Servicio restaurado."),
+            CancellationToken.None);
+
+        Assert.Equal(TicketStatus.Resolved, ticket.Status);
+        Assert.Contains(ticket.Comments, comment =>
+            comment.Type == TicketCommentType.Resolution &&
+            comment.Body == "Servicio restaurado.");
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     }
 
     [Fact]

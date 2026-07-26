@@ -154,7 +154,11 @@ public sealed class TicketQueryTests
     }
 
     [Fact]
+<<<<<<< HEAD
     public async Task GetSlaReport_SupervisorCanFilterAnyCategory()
+=======
+    public async Task GetSlaReport_SupervisorIsRestrictedToOwnCategory()
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     {
         var context = new TestContext();
         var category = ApplicationTestData.Category();
@@ -166,6 +170,7 @@ public sealed class TicketQueryTests
             new FakeSlaReportReadRepository(),
             new GetSlaReportValidator());
 
+<<<<<<< HEAD
         await handler.Handle(
             new GetSlaReportQuery(
                 supervisor.Id,
@@ -175,6 +180,18 @@ public sealed class TicketQueryTests
 
     [Fact]
     public async Task GetSlaReport_SupervisorWithoutFilterReceivesAllCategories()
+=======
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
+            handler.Handle(
+                new GetSlaReportQuery(
+                    supervisor.Id,
+                    SupportCategoryId: otherCategory.Id),
+                CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task GetSlaReport_SupervisorFilterIsForcedToOwnCategory()
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     {
         var context = new TestContext();
         var category = ApplicationTestData.Category();
@@ -210,7 +227,11 @@ public sealed class TicketQueryTests
             new GetSlaReportQuery(supervisor.Id),
             CancellationToken.None);
 
+<<<<<<< HEAD
         Assert.Null(readRepository.ReceivedFilter!.SupportCategoryId);
+=======
+        Assert.Equal(category.Id, readRepository.ReceivedFilter!.SupportCategoryId);
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
         Assert.Equal(SlaReportLabels.UnassignedTechnician, response.Groups.Single().TechnicianName);
         Assert.Equal(1, response.TotalPendingCycles);
         Assert.Equal(1, response.TotalEvaluatedCycles);

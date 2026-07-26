@@ -6,6 +6,10 @@ using HelpDesk.Backend.Application.Features.Tickets.Commands.AssignTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.CloseTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.CreateTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.DeleteTicket;
+<<<<<<< HEAD
+=======
+using HelpDesk.Backend.Application.Features.Tickets.Commands.ForceTicketStatus;
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ReassignTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ReopenTicket;
 using HelpDesk.Backend.Application.Features.Tickets.Commands.ResolveTicket;
@@ -203,6 +207,26 @@ public sealed class TicketsController(ISender sender) : ApiControllerBase
         return NoContent();
     }
 
+<<<<<<< HEAD
+=======
+    [HttpPost("{id:guid}/force-status")]
+    [Authorize(Roles = RoleNames.SupervisorOrSuperAdmin)]
+    public async Task<IActionResult> ForceStatus(
+        Guid id,
+        ForceTicketStatusApiRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(
+            new ForceTicketStatusCommand(
+                ActorUserId,
+                id,
+                request.TargetStatus,
+                request.Justification),
+            cancellationToken);
+        return NoContent();
+    }
+
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
     [HttpGet("{id:guid}/assignable-technicians")]
     [Authorize(Roles = RoleNames.SupervisorOrSuperAdmin)]
     public async Task<ActionResult<IReadOnlyList<AssignableTechnicianResponse>>>

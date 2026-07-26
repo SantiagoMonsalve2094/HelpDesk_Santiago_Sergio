@@ -6,9 +6,13 @@ namespace HelpDesk.Backend.Application.Features.Tickets;
 
 internal static class TicketMapper
 {
+<<<<<<< HEAD
     internal static TicketDetailsResponse ToDetails(
         Ticket ticket,
         IReadOnlyDictionary<Guid, string> authorNames) =>
+=======
+    internal static TicketDetailsResponse ToDetails(Ticket ticket) =>
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
         new(
             ticket.Id,
             ticket.Number.Value,
@@ -35,7 +39,10 @@ internal static class TicketMapper
             ticket.Comments.Select(comment => new TicketCommentResponse(
                 comment.Id,
                 comment.AuthorUserId,
+<<<<<<< HEAD
                 authorNames.GetValueOrDefault(comment.AuthorUserId, "Usuario"),
+=======
+>>>>>>> 60bd3aa8c163527f2e018e15a29114b99aa06847
                 comment.Type,
                 comment.Body,
                 comment.SatisfiesResolutionRequirement,
