@@ -6,7 +6,7 @@ using HelpDesk.Backend.Application.Features.Users.Commands.CreateUser;
 using HelpDesk.Backend.Application.Features.Users.Commands.UpdateTechnicianProfile;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUserById;
 using HelpDesk.Backend.Application.Features.Users.Queries.GetUsers;
-using HelpDesk.Backend.Application.Tests.TestDoubles;
+using HelpDesk.Backend.Application.Tests.Common.TestDoubles;
 using HelpDesk.Backend.Domain.Enums;
 using HelpDesk.Backend.Domain.Aggregates.Users;
 using Moq;
