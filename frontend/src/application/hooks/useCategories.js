@@ -8,10 +8,10 @@ export function useSupportCategories(token, query, refreshKey = 0) {
   );
 }
 
-export function useSupportCategoryDetail(token, categoryId) {
+export function useSupportCategoryDetail(token, categoryId, refreshKey = 0) {
   return useAsyncData(
     () => supportCategoryRepository.getById(token, categoryId),
-    [token, categoryId]
+    [token, categoryId, refreshKey]
   );
 }
 

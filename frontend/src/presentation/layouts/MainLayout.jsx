@@ -20,7 +20,7 @@ export function MainLayout({
         onLogout={onLogout}
       />
       <main className="workspace">
-        {toast && <div className="toast" role="status">{toast}</div>}
+        {toast && <div className="toast" role="status" aria-live="polite">{toast}</div>}
         <Header user={user} onRefresh={onRefresh} refreshing={refreshing} />
         {children}
       </main>

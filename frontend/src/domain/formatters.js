@@ -26,3 +26,16 @@ export function formatDuration(value) {
   if (hours > 0) return `${hours} h`;
   return `${minutes} min`;
 }
+
+export function durationToMinutes(value) {
+  if (value === null || value === undefined || value === "") return null;
+  if (typeof value === "number") return value;
+
+  const match = /^(?:(\d+)\.)?(\d{1,2}):(\d{2})(?::\d{2}(?:\.\d+)?)?$/.exec(
+    String(value),
+  );
+  if (!match) return null;
+
+  const [, days = "0", hours, minutes] = match;
+  return Number(days) * 1440 + Number(hours) * 60 + Number(minutes);
+}

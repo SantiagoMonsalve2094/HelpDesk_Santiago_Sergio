@@ -67,7 +67,7 @@ export function UsersPage({ token, notify }) {
     <section className="panel">
       <div className="section-head">
         <div>
-          <p className="eyebrow">Administraci?n</p>
+          <p className="eyebrow">{"Administraci\u00f3n"}</p>
           <h2>Usuarios</h2>
         </div>
       </div>
@@ -79,14 +79,14 @@ export function UsersPage({ token, notify }) {
           required
         />
         <input
-          placeholder="Correo electr?nico"
+          placeholder={"Correo electr\u00f3nico"}
           type="email"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           required
         />
         <input
-          placeholder="Contrase?a"
+          placeholder={"Contrase\u00f1a"}
           type="password"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -138,7 +138,7 @@ export function UsersPage({ token, notify }) {
               setForm({ ...form, supervisorCategoryId: e.target.value })
             }
           >
-            <option value="">Categor?a supervisada</option>
+            <option value="">{"Categor\u00eda supervisada"}</option>
             {activeCategories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
@@ -147,14 +147,17 @@ export function UsersPage({ token, notify }) {
           </select>
         )}
         {form.role === "technician" && (
-          <input
-            type="number"
-            min="1"
-            value={form.maxActiveTickets}
-            onChange={(e) =>
-              setForm({ ...form, maxActiveTickets: Number(e.target.value) })
-            }
-          />
+          <label className="capacity-field">
+            {"Capacidad m\u00e1xima de tickets"}
+            <input
+              type="number"
+              min="1"
+              value={form.maxActiveTickets}
+              onChange={(e) =>
+                setForm({ ...form, maxActiveTickets: Number(e.target.value) })
+              }
+            />
+          </label>
         )}
         {error && <div className="error-box">{error}</div>}
         <button className="primary-button">Crear usuario</button>
@@ -403,17 +406,20 @@ function UserDetailForms({ token, userDetail, categories, onChanged }) {
               </option>
             ))}
           </select>
-          <input
-            type="number"
-            min="1"
-            value={technicianProfile.maxActiveTickets}
-            onChange={(e) =>
-              setTechnicianProfile({
-                ...technicianProfile,
-                maxActiveTickets: Number(e.target.value),
-              })
-            }
-          />
+          <label className="capacity-field">
+            {"Capacidad m\u00e1xima de tickets"}
+            <input
+              type="number"
+              min="1"
+              value={technicianProfile.maxActiveTickets}
+              onChange={(e) =>
+                setTechnicianProfile({
+                  ...technicianProfile,
+                  maxActiveTickets: Number(e.target.value),
+                })
+              }
+            />
+          </label>
           <button className="secondary-button">Guardar perfil técnico</button>
         </form>
       )}

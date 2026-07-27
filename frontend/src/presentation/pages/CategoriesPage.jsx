@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { priorities } from "../../domain/constants";
-import { toLabel } from "../../domain/formatters";
+import { durationToMinutes, toLabel } from "../../domain/formatters";
 import { isPrivileged } from "../../domain/ticketRules";
 import { hasBlankFields } from "../../domain/validation";
 import { useSupportCategories, useSupportCategoryDetail, supportCategoryRepository } from "../../application/hooks/useCategories";
@@ -96,6 +96,7 @@ export function CategoriesPage({ token, user, notify }) {
             user={user}
             category={category}
             notify={notify}
+            refreshKey={refreshKey}
             onChanged={() => setRefreshKey((value) => value + 1)}
           />
         ))}
@@ -104,8 +105,8 @@ export function CategoriesPage({ token, user, notify }) {
   );
 }
 
-function CategoryCard({ token, user, category, notify, onChanged }) {
-  const detail = useSupportCategoryDetail(token, category.id);
+function CategoryCard({ token, user, category, notify, refreshKey, onChanged }) {
+  const detail = useSupportCategoryDetail(token, category.id, refreshKey);
   const [sla, setSla] = useState({
     priority: "critical",
     responseTimeMinutes: 120,
@@ -119,6 +120,19 @@ function CategoryCard({ token, user, category, notify, onChanged }) {
   useEffect(() => {
     setEdit({ name: category.name, description: category.description });
   }, [category.name, category.description]);
+
+  useEffect(() => {
+    const selectedPolicy = (detail.data?.slaPolicies || []).find(
+      (policy) => policy.priority === sla.priority,
+    );
+    const currentMinutes = durationToMinutes(selectedPolicy?.responseTime);
+    if (currentMinutes !== null) {
+      setSla((current) => ({
+        ...current,
+        responseTimeMinutes: currentMinutes,
+      }));
+    }
+  }, [detail.data, sla.priority]);
 
   async function updateCategory(event) {
     event.preventDefault();
@@ -163,6 +177,7 @@ function CategoryCard({ token, user, category, notify, onChanged }) {
         sla.priority,
         sla.responseTimeMinutes,
       );
+      notify("SLA actualizado correctamente.");
       onChanged();
     } catch (err) {
       setError(err.message);
@@ -215,7 +230,12 @@ function CategoryCard({ token, user, category, notify, onChanged }) {
         <form className="mini-form" onSubmit={updateSla} noValidate>
           <select
             value={sla.priority}
-            onChange={(e) => setSla({ ...sla, priority: e.target.value })}
+            onChange={(e) =>
+              setSla((current) => ({
+                ...current,
+                priority: e.target.value,
+              }))
+            }
           >
             {priorities.map((priority) => (
               <option key={priority} value={priority}>

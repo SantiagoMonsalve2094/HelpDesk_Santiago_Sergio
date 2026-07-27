@@ -34,11 +34,11 @@ export function LoginPage({ onLogin }) {
         </div>
         <form onSubmit={submit} className="stack" noValidate>
           <label>
-            Correo electrónico
+            {"Correo electr\u00f3nico"}
             <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" required />
           </label>
           <label>
-            Contraseña
+            {"Contrase\u00f1a"}
             <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" required />
           </label>
           {error && <div className="error-box">{error}</div>}

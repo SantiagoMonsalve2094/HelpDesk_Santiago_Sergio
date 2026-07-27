@@ -1,10 +1,22 @@
 import { useAsyncData } from "./useAsyncData";
 import { ticketRepository } from "../../infrastructure/repositories/ticketRepository";
 
-export function useTickets(token, filters, refreshKey) {
+export function useTickets(token, filters, pageNumber, refreshKey) {
   return useAsyncData(
-    () => ticketRepository.list(token, { ...filters, pageSize: 50 }),
-    [token, refreshKey, filters.status, filters.priority, filters.isOverdue]
+    () =>
+      ticketRepository.list(token, {
+        ...filters,
+        pageNumber,
+        pageSize: 8,
+      }),
+    [
+      token,
+      refreshKey,
+      pageNumber,
+      filters.status,
+      filters.priority,
+      filters.isOverdue,
+    ]
   );
 }
 

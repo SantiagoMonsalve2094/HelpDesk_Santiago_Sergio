@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { priorities, statuses } from "../../domain/constants";
 import { formatDate, toLabel } from "../../domain/formatters";
 import {
@@ -21,8 +21,21 @@ export function TicketsPage({ token, user, notify }) {
   const [selectedId, setSelectedId] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
   const [showCreate, setShowCreate] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
   const now = useNow();
-  const tickets = useTickets(token, filters, refreshKey);
+  const tickets = useTickets(token, filters, pageNumber, refreshKey);
+  const totalCount = tickets.data?.totalCount || 0;
+  const totalPages = Math.max(1, Math.ceil(totalCount / 8));
+
+  useEffect(() => {
+    if (pageNumber > totalPages) setPageNumber(totalPages);
+  }, [pageNumber, totalPages]);
+
+  function updateFilters(field, value) {
+    setFilters((current) => ({ ...current, [field]: value }));
+    setPageNumber(1);
+    setSelectedId("");
+  }
 
   function refresh(message) {
     if (message) notify(message);
@@ -60,9 +73,7 @@ export function TicketsPage({ token, user, notify }) {
           <div className="filters">
             <select
               value={filters.status}
-              onChange={(event) =>
-                setFilters({ ...filters, status: event.target.value })
-              }
+              onChange={(event) => updateFilters("status", event.target.value)}
             >
               <option value="">Estado</option>
               {statuses.map((status) => (
@@ -73,9 +84,7 @@ export function TicketsPage({ token, user, notify }) {
             </select>
             <select
               value={filters.priority}
-              onChange={(event) =>
-                setFilters({ ...filters, priority: event.target.value })
-              }
+              onChange={(event) => updateFilters("priority", event.target.value)}
             >
               <option value="">Prioridad</option>
               {priorities.map((priority) => (
@@ -87,7 +96,7 @@ export function TicketsPage({ token, user, notify }) {
             <select
               value={filters.isOverdue}
               onChange={(event) =>
-                setFilters({ ...filters, isOverdue: event.target.value })
+                updateFilters("isOverdue", event.target.value)
               }
             >
               <option value="">SLA</option>
@@ -141,19 +150,33 @@ export function TicketsPage({ token, user, notify }) {
               <EmptyState
                 title="No hay tickets para mostrar"
                 description="Cuando existan solicitudes disponibles para tu rol aparecerán en esta lista."
-                action={
-                  canCreateTicket ? (
-                    <button
-                      className="secondary-button"
-                      onClick={() => setShowCreate(true)}
-                    >
-                      Crear ticket
-                    </button>
-                  ) : null
-                }
               />
             )}
           </div>
+          {!tickets.loading && totalCount > 0 && (
+            <nav className="pagination" aria-label="Paginación de tickets">
+              <button
+                type="button"
+                className="ghost-button"
+                disabled={pageNumber === 1}
+                onClick={() => setPageNumber((page) => page - 1)}
+              >
+                Anterior
+              </button>
+              <span className="pagination-status">
+                Página {pageNumber} de {totalPages}
+                <small>{totalCount} tickets</small>
+              </span>
+              <button
+                type="button"
+                className="ghost-button"
+                disabled={pageNumber === totalPages}
+                onClick={() => setPageNumber((page) => page + 1)}
+              >
+                Siguiente
+              </button>
+            </nav>
+          )}
         </div>
       </div>
       <TicketDetail

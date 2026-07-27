@@ -50,6 +50,12 @@ export function AppRouter() {
     }
   }, [hasRouteAccess, user]);
 
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timeoutId = window.setTimeout(() => setToast(""), 4000);
+    return () => window.clearTimeout(timeoutId);
+  }, [toast]);
+
   function navigate(view) {
     const nextPath = pathForView(view);
     window.history.pushState({}, "", nextPath);
