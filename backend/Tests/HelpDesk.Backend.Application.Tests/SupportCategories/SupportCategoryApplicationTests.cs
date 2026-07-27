@@ -3,7 +3,7 @@ using HelpDesk.Backend.Application.Features.SupportCategories.Commands.SetSuppor
 using HelpDesk.Backend.Application.Features.SupportCategories.Commands.UpdateSupportCategorySla;
 using HelpDesk.Backend.Application.Features.SupportCategories.Queries.GetSupportCategories;
 using HelpDesk.Backend.Application.Features.SupportCategories.Queries.GetSupportCategoryById;
-using HelpDesk.Backend.Application.Tests.TestDoubles;
+using HelpDesk.Backend.Application.Tests.Common.TestDoubles;
 using HelpDesk.Backend.Domain.Common;
 using HelpDesk.Backend.Domain.Enums;
 

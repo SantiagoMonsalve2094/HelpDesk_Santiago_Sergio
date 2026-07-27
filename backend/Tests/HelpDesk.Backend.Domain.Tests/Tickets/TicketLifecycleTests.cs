@@ -163,7 +163,7 @@ public sealed class TicketLifecycleTests
     public void HistoryCollections_AreReadOnly()
     {
         var ticket = TestData.Ticket(Guid.NewGuid(), Guid.NewGuid());
-        var collection = Assert.IsAssignableFrom<ICollection<HelpDesk.Backend.Domain.Aggregates.Tickets.TicketStatusChange>>(
+        var collection = Assert.IsAssignableFrom<ICollection<HelpDesk.Backend.Domain.Entities.Tickets.TicketStatusChange>>(
             ticket.StatusHistory);
 
         Assert.True(collection.IsReadOnly);

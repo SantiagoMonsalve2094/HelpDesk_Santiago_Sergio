@@ -5,7 +5,7 @@ using HelpDesk.Backend.Application.Interfaces.Persistence;
 using HelpDesk.Backend.Application.Exceptions;
 using HelpDesk.Backend.Application.Features.Auth.Commands.Login;
 using HelpDesk.Backend.Application.Features.Auth.Queries.GetCurrentUser;
-using HelpDesk.Backend.Application.Tests.TestDoubles;
+using HelpDesk.Backend.Application.Tests.Common.TestDoubles;
 using HelpDesk.Backend.Domain.Aggregates.Users;
 using Moq;
 

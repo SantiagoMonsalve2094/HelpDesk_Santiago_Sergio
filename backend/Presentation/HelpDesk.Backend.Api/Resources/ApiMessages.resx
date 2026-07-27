@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="InvalidCredentialsTitle" xml:space="preserve">
+    <value>Credenciales inválidas</value>
+  </data>
+  <data name="AccessDeniedTitle" xml:space="preserve">
+    <value>Acceso denegado</value>
+  </data>
+  <data name="ResourceNotFoundTitle" xml:space="preserve">
+    <value>Recurso no encontrado</value>
+  </data>
+  <data name="DomainConflictTitle" xml:space="preserve">
+    <value>Conflicto de dominio</value>
+  </data>
+  <data name="ConcurrencyConflictTitle" xml:space="preserve">
+    <value>Conflicto de concurrencia</value>
+  </data>
+  <data name="ConcurrencyConflict" xml:space="preserve">
+    <value>El recurso fue modificado por otra operación. Actualice la información e inténtelo de nuevo.</value>
+  </data>
+  <data name="UniquenessConflictTitle" xml:space="preserve">
+    <value>Conflicto de unicidad</value>
+  </data>
+  <data name="UniquenessConflict" xml:space="preserve">
+    <value>Ya existe un registro con los datos únicos indicados.</value>
+  </data>
+  <data name="ConflictTitle" xml:space="preserve">
+    <value>Conflicto</value>
+  </data>
+  <data name="InvalidRequestTitle" xml:space="preserve">
+    <value>Solicitud inválida</value>
+  </data>
+  <data name="InvalidRequest" xml:space="preserve">
+    <value>La solicitud contiene datos inválidos.</value>
+  </data>
+  <data name="UnexpectedErrorTitle" xml:space="preserve">
+    <value>Error interno</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Ocurrió un error inesperado.</value>
+  </data>
+  <data name="ValidationTitle" xml:space="preserve">
+    <value>Error de validación</value>
+  </data>
+  <data name="Validation" xml:space="preserve">
+    <value>Uno o más campos son inválidos.</value>
+  </data>
+  <data name="ActorClaimRequired" xml:space="preserve">
+    <value>El token no contiene un identificador de usuario válido.</value>
+  </data>
+  <data name="InvalidFieldValue" xml:space="preserve">
+    <value>El valor enviado no es válido.</value>
+  </data>
+  <data name="InvalidFields" xml:space="preserve">
+    <value>Uno o más campos de la solicitud son inválidos.</value>
+  </data>
+  <data name="UnauthenticatedTitle" xml:space="preserve">
+    <value>No autenticado</value>
+  </data>
+  <data name="ValidAccessTokenRequired" xml:space="preserve">
+    <value>Se requiere un token de acceso válido.</value>
+  </data>
+  <data name="OperationNotAllowed" xml:space="preserve">
+    <value>El usuario no tiene permisos para ejecutar esta operación.</value>
+  </data>
+  <data name="TooManyAttemptsTitle" xml:space="preserve">
+    <value>Demasiados intentos</value>
+  </data>
+  <data name="TooManyLoginAttempts" xml:space="preserve">
+    <value>Se permiten máximo cinco intentos de inicio de sesión por minuto.</value>
+  </data>
+  <data name="SwaggerBearerDescription" xml:space="preserve">
+    <value>Ingrese el token JWT con el prefijo Bearer.</value>
+  </data>
+</root>

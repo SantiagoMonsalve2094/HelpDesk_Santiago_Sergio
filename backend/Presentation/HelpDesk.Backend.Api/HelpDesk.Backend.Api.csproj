@@ -18,4 +18,17 @@
     <ProjectReference Include="..\..\Infrastructure\HelpDesk.Backend.Infrastructure\HelpDesk.Backend.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\ApiMessages.Designer.cs">
+      <DependentUpon>ApiMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <EmbeddedResource Update="Resources\ApiMessages.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>ApiMessages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
